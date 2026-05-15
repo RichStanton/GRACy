@@ -1,0 +1,1 @@
+Forked from Salvo's GRACy branch to include bugfixes and minor updates. See his original branch for usage. A script to auto-generate the config files for assembly is here, it's useful if you're assembling lots of genomes: https://github.com/Kosennai/GRACy-Auto-Config-Maker 

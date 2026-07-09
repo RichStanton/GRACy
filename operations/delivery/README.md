@@ -9,3 +9,5 @@ How work flows for GRACy.
 - **Decisions that gate work or would surprise a future reader → an ADR** in `operations/decisions/`.
 - Pipeline: `grill-me`/`grill-with-docs` (align) → `to-prd` (spec issue) → `to-issues` (vertical
   slices) → `triage` (gate to `ready-for-agent`) → `tdd`/`diagnose` (execution).
+- **Backlog:** current work items are filed as GitHub issues #2–#17; see [`backlog.md`](./backlog.md)
+  for the git-tracked index.

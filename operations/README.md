@@ -7,7 +7,8 @@ decision record. Code lives elsewhere (`src/`, `data/`); throwaway/legacy analys
 | Area | Folder | What it is |
 |---|---|---|
 | **Architecture** | `architecture/` | Current understanding of the codebase structure and pipeline. |
-| **Delivery** | `delivery/` | How work flows — tracker, labels, PR/merge method. |
+| **Delivery** | `delivery/` | How work flows — tracker, labels, PR/merge method, and the `backlog.md` index. |
+| **Journal** | `journal/` | Dated progress log — what happened each working session. |
 | **Decisions** | `decisions/` | ADRs — why, append-only. |
 | **Archive** | `archive/` | Historical notes, not maintained (e.g. the original code review). |
 

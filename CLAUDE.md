@@ -19,6 +19,8 @@ Linux HPC environments and wet-lab scientists. This clone is a fork of
 |---|---|
 | `operations/architecture/ARCHITECTURE.md` | Current understanding of the codebase, pipeline stages, tool deps. |
 | `operations/delivery/README.md` | How work flows — tracker, labels, PR/merge method. |
+| `operations/delivery/backlog.md` | Git-tracked index of the live work items (GitHub issues #2–#17). |
+| `operations/journal/` | Dated progress log — read the latest to see where things stand. |
 | `operations/decisions/` | ADRs, append-only. |
 | `operations/archive/` | Historical notes, not maintained (original code review). |
 | `src/` | Application code — Tkinter launcher, PyQt5 module GUIs, per-stage scripts. |

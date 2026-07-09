@@ -1,6 +1,7 @@
 # GRACy — Combined Improvement Plan
 
-**Date:** 2026-07-09 · **Status:** proposed · **Basis:** merged from two reviews —
+**Date:** 2026-07-09 · **Status:** backlog filed as GitHub issues #2–#17 (see `../delivery/backlog.md`) ·
+**Basis:** merged from two reviews —
 the correctness/hygiene pass (impact × risk) and the depth pass (seams, deletion test,
 `operations/archive/initial_review.md`). All figures verified against source.
 

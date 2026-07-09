@@ -1,0 +1,27 @@
+[project]
+name = "GRACy"
+version = "0.1.0"
+description = "GUI pipeline for HCMV genome assembly and analysis"
+requires-python = ">=3.8"
+
+# ---------------------------------------------------------------------------
+# Ruff — linter + formatter
+# Run:  ruff check src/
+#       ruff check --fix src/   (auto-fix safe violations)
+# ---------------------------------------------------------------------------
+[tool.ruff]
+target-version = "py38"
+line-length = 120
+
+[tool.ruff.lint]
+# Start with core error and warning rules only.
+# Gradually enable "B" (bugbear), "C4" (comprehensions), "UP" (pyupgrade)
+# once the baseline violations are cleared.
+select = ["E", "F", "W"]
+ignore = [
+    "E501",  # line too long — too many instances to fix in one pass
+]
+
+# Exclude macOS AppleDouble resource fork files (binary, not Python)
+[tool.ruff.lint.per-file-ignores]
+"src/**/._*.py" = ["E902"]

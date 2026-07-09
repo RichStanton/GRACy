@@ -1,3 +1,7 @@
 src/conda/
 src/conda2/
+.claude/settings.local.json
 
+# Local backups from the Windows->WSL consolidation (kept on disk, not tracked)
+README.fuller-draft.md
+.claude/settings.json.compound-eng.bak

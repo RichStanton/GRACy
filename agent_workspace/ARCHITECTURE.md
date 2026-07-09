@@ -336,25 +336,17 @@ python <installDir>/src/scripts/<module>/<module>Qt.py <installDir>
 
 ## Known Issues & Technical Debt
 
-> **The prioritised, verified action plan lives in [`improvement-plan.md`](./improvement-plan.md)**
-> (impact × risk, ranked, with a recommended sequence). The table below is the raw register;
-> the plan is what to act on. Figures re-verified against source 2026-07-09.
-
 | Issue | Location | Severity |
 |-------|---------|---------|
-| Return codes from all `os.system()` calls silently ignored → **silent wrong science** | 858 calls, all modules | High |
-| Command injection: user args concatenated raw into shell strings (428/858 calls use shell features) | All `*Qt.py` | High |
-| Pipeline logic is a side-effect blob inside the Qt class — untestable, not headless | All `*Qt.py` | High |
-| Dead non-Qt twins (`assembly.py`, `genotyping.py`, `snpCalling.py`, `annotation.py`) + `.bak`/`._` — unreferenced | `src/scripts/*` | Medium |
-| No shared command-runner — conda tool path hand-typed at ~605 sites | Throughout | Medium |
-| Alignment chain (bowtie2/bwa/samtools) re-typed at ~28 sites, no shared module | Throughout | Medium |
-| Positional, schema-less config parsing, duplicated | `assembly.conf` handling | Medium |
+| Command injection via `os.system()` with unsanitized user input | All `*Qt.py` files | High |
+| Return codes from all `os.system()` calls silently ignored | All modules | High |
+| All logic embedded in `Toplevel1.__init__` — untestable, not headless | All `*Qt.py` | High |
+| `assembly.py` is a single 1,133-line method | `assembly/assembly.py` | Medium |
 | Python 2 EOL conda env (RAGOUT now supports Python 3) | `install.sh` | Medium |
-| Repo bloat — `.git` is 332 MB (Miniconda installers ~117 MB + old `webin-cli` jars tracked) | `src/Miniconda*.sh`, `dbsubmission/utils/*.jar` | Medium |
-| Committed `GRACy.py` is a build artifact with a stale hardcoded HPC path (lines 1–2) | `GRACy.py` | Low–Med |
-| macOS `.DS_Store` / `._*` AppleDouble files committed | Throughout | Low |
-| No test suite (`testDataset/` has 4 input FASTQs but no golden output) | Repo root | Medium |
-| `>null` redirects write a literal file named `null`, not `/dev/null` (201×) | Throughout | Low |
+| Miniconda installers committed to repo (756 MB bloat) | `src/Miniconda*.sh` | Medium |
+| Hardcoded developer HPC path in original shebang (rewritten at install) | `GRACy.py` | Low |
+| macOS AppleDouble `._*.py` files committed | Throughout `src/` | Low |
+| No test suite; `testDataset/` is empty | Repo root | Medium |
 | Linux-only despite partial `sys.platform == "win32"` checks | Throughout | Low |
 
 ---

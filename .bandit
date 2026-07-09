@@ -1,0 +1,9 @@
+[bandit]
+# B607: start_process_with_partial_path
+# GRACy uses full installationDirectory-prefixed paths for all tools.
+# The B607 findings are false positives; suppress them.
+# Remove this skip once os.system() calls are replaced with subprocess.run().
+skips = B607
+
+# Exclude macOS AppleDouble resource fork files (binary, not valid Python)
+exclude_dirs = []

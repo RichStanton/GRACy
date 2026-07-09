@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GRACy — combined improvement plan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module">
+      import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+      mermaid.initialize({ startOnLoad: true, theme: "neutral", securityLevel: "loose" });
+    </script>
+    <style>
+      .seam { stroke-dasharray: 5 4; }
+      .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    </style>
+  </head>
+  <body class="bg-stone-50 text-slate-900 font-sans antialiased">
+    <main class="max-w-5xl mx-auto px-6 py-12 space-y-14">
+
+      <header class="space-y-4">
+        <p class="text-xs uppercase tracking-[0.2em] text-slate-500">Combined improvement plan · impact × risk × depth</p>
+        <h1 class="text-4xl font-serif font-semibold">GRACy</h1>
+        <p class="text-slate-600 max-w-2xl">Two reviews merged into one ranked plan: the <strong>correctness &amp; hygiene</strong> pass (impact × risk) and the <strong>depth</strong> pass (seams, deletion test). Overlapping findings are collapsed — the return-code wrapper and the command-runner module are the same work seen through two lenses. Ranked most-actionable first: high impact, low risk, unblocks the rest.</p>
+        <p class="text-xs text-slate-400">Findings verified against source · 2026-07-09</p>
+        <div class="flex flex-wrap gap-4 text-xs text-slate-500 pt-1">
+          <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> impact review</span>
+          <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span> depth review</span>
+          <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-slate-800"></span> both</span>
+        </div>
+      </header>
+
+      <!-- ===== Signature visual: Impact × Risk matrix ===== -->
+      <section class="rounded-xl border border-slate-200 bg-white p-6">
+        <h2 class="text-sm uppercase tracking-wider text-slate-500 mb-1">The combined view — impact × risk</h2>
+        <p class="text-xs text-slate-500 mb-4">Numbers are the ranked items below. Top-left is the sweet spot: big gain, low chance of breaking working science.</p>
+        <div class="overflow-x-auto">
+        <svg viewBox="0 0 660 380" class="w-full" style="max-width:660px" font-family="ui-sans-serif,system-ui">
+          <rect x="70" y="40" width="240" height="150" fill="#ecfdf5"/>
+          <rect x="310" y="40" width="280" height="150" fill="#fffbeb"/>
+          <rect x="70" y="190" width="240" height="150" fill="#f8fafc"/>
+          <rect x="310" y="190" width="280" height="150" fill="#fef2f2"/>
+          <line x1="70" y1="40" x2="70" y2="340" stroke="#94a3b8" stroke-width="1.5"/>
+          <line x1="70" y1="340" x2="590" y2="340" stroke="#94a3b8" stroke-width="1.5"/>
+          <line x1="310" y1="40" x2="310" y2="340" stroke="#cbd5e1" stroke-width="1" class="seam"/>
+          <line x1="70" y1="190" x2="590" y2="190" stroke="#cbd5e1" stroke-width="1" class="seam"/>
+          <text x="60" y="45" text-anchor="end" font-size="11" fill="#64748b">high</text>
+          <text x="60" y="338" text-anchor="end" font-size="11" fill="#64748b">low</text>
+          <text x="34" y="195" text-anchor="middle" font-size="11" fill="#475569" transform="rotate(-90 34 195)" letter-spacing="1">IMPACT</text>
+          <text x="70" y="360" text-anchor="middle" font-size="11" fill="#64748b">low</text>
+          <text x="590" y="360" text-anchor="middle" font-size="11" fill="#64748b">high</text>
+          <text x="330" y="374" text-anchor="middle" font-size="11" fill="#475569" letter-spacing="1">RISK →</text>
+          <text x="88" y="60" font-size="10" fill="#059669" letter-spacing="1">DO FIRST</text>
+          <text x="330" y="60" font-size="10" fill="#b45309" letter-spacing="1">SEQUENCE CAREFULLY</text>
+          <text x="88" y="332" font-size="10" fill="#64748b" letter-spacing="1">EASY POLISH</text>
+          <text x="330" y="332" font-size="10" fill="#dc2626" letter-spacing="1">DEFER / GUARD FIRST</text>
+          <g font-size="12" font-weight="700" text-anchor="middle">
+            <circle cx="110" cy="70" r="14" fill="#0f172a"/><text x="110" y="74" fill="#fff">1</text>
+            <circle cx="205" cy="92" r="14" fill="#0f172a"/><text x="205" y="96" fill="#fff">2</text>
+            <circle cx="112" cy="150" r="14" fill="#6366f1"/><text x="112" y="154" fill="#fff">3</text>
+            <circle cx="175" cy="168" r="14" fill="#10b981"/><text x="175" y="172" fill="#fff">4</text>
+            <circle cx="360" cy="120" r="14" fill="#6366f1"/><text x="360" y="124" fill="#fff">5</text>
+            <circle cx="430" cy="80" r="14" fill="#0f172a"/><text x="430" y="84" fill="#fff">6</text>
+            <circle cx="215" cy="150" r="14" fill="#10b981"/><text x="215" y="154" fill="#fff">7</text>
+            <circle cx="360" cy="185" r="14" fill="#0f172a"/><text x="360" y="189" fill="#fff">8</text>
+            <circle cx="560" cy="250" r="14" fill="#10b981"/><text x="560" y="254" fill="#fff">9</text>
+            <circle cx="410" cy="240" r="14" fill="#10b981"/><text x="410" y="244" fill="#fff">10</text>
+          </g>
+        </svg>
+        </div>
+      </section>
+
+      <!-- ===== Ranked cards ===== -->
+      <section id="items" class="space-y-4">
+
+        <!-- 1 -->
+        <article class="rounded-xl border border-slate-200 bg-white p-5">
+          <div class="flex items-start gap-4">
+            <div class="shrink-0 w-9 h-9 rounded-full bg-slate-900 text-white grid place-items-center font-semibold">1</div>
+            <div class="flex-1 space-y-2">
+              <div class="flex items-center justify-between flex-wrap gap-2">
+                <h3 class="text-lg font-serif font-semibold">End-to-end smoke test on <span class="mono text-base">testDataset/</span> + CI</h3>
+                <div class="flex gap-1.5 text-xs">
+                  <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">Impact High</span>
+                  <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">Risk Low</span>
+                  <span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">impact review</span>
+                </div>
+              </div>
+              <p class="text-sm text-slate-600"><span class="font-medium text-slate-800">Problem.</span> No test anywhere; every risky change below is a blind edit. <span class="font-medium text-slate-800">Do.</span> <span class="mono">testDataset/</span> ships 4 input FASTQs but <em>no</em> golden output — so step one is a <strong>smoke + sanity</strong> run (pipeline completes without error; genome non-empty and plausible), then pin a known-good result as a <strong>golden file</strong> for true regression power. Wire to CI. <span class="text-emerald-700 font-medium">This is the safety net that makes 2–10 safe — do it first.</span></p>
+            </div>
+          </div>
+        </article>
+
+        <!-- 2 -->
+        <article class="rounded-xl border border-slate-200 bg-white p-5">
+          <div class="flex items-start gap-4">
+            <div class="shrink-0 w-9 h-9 rounded-full bg-slate-900 text-white grid place-items-center font-semibold">2</div>
+            <div class="flex-1 space-y-2">
+              <div class="flex items-center justify-between flex-wrap gap-2">
+                <h3 class="text-lg font-serif font-semibold">Command-runner module <span class="mono text-base">run(tool, *args)</span></h3>
+                <div class="flex gap-1.5 text-xs">
+                  <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">Impact High</span>
+                  <span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">Risk Low–Med</span>
+                  <span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-300">both lenses</span>
+                </div>
+              </div>
+              <p class="text-sm text-slate-600"><span class="font-medium text-slate-800">Problem.</span> ~605 inline <span class="mono">os.system(installationDirectory+"src/conda/bin/…")</span> sites, path hand-typed, return codes discarded — a failed alignment continues silently and produces wrong science. <span class="font-medium text-slate-800">Do.</span> One deep module that resolves the tool path, runs it, checks the return code, and logs. <span class="text-slate-500">Merges the impact review's "return-code wrapper" with the depth review's #1 deepening.</span></p>
+              <ul class="flex flex-wrap gap-x-5 gap-y-1 text-xs text-slate-600">
+                <li>• leverage: 605 sites, one interface</li><li>• locality: silent-failure fixed once</li><li>• the interface becomes the test surface</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <!-- 3 -->
+        <article class="rounded-xl border border-slate-200 bg-white p-5">
+          <div class="flex items-start gap-4">
+            <div class="shrink-0 w-9 h-9 rounded-full bg-indigo-600 text-white grid place-items-center font-semibold">3</div>
+            <div class="flex-1 space-y-2">
+              <div class="flex items-center justify-between flex-wrap gap-2">
+                <h3 class="text-lg font-serif font-semibold">Delete the dead non-Qt twins (+ <span class="mono text-base">.bak</span>, <span class="mono text-base">._</span> copies)</h3>
+                <div class="flex gap-1.5 text-xs">
+                  <span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">Impact Med</span>
+                  <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">Risk Low</span>
+                  <span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-300">both lenses</span>
+                </div>
+              </div>
+              <p class="text-sm text-slate-600"><span class="font-medium text-slate-800">Problem.</span> Every live <span class="mono">*Qt.py</span> has a stale non-Qt twin (<span class="mono">assembly.py</span>, <span class="mono">genotyping.py</span>, <span class="mono">snpCalling.py</span>, <span class="mono">annotation.py</span>) — verified unreferenced in code <em>and</em> in <span class="mono">install.sh</span> — plus <span class="mono">.bak</span> and <span class="mono">._</span> copies. They defeat locality: a fix to the runner/alignment/config would have to be applied to dead copies too. <span class="font-medium text-slate-800">Do.</span> Delete them (keep <span class="mono">src/.GRACy_main.py</span> — install.sh builds the launcher from it). Precondition for 2, 5, 8 having one home.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- 4 -->
+        <article class="rounded-xl border border-slate-200 bg-white p-5">
+          <div class="flex items-start gap-4">
+            <div class="shrink-0 w-9 h-9 rounded-full bg-emerald-600 text-white grid place-items-center font-semibold">4</div>
+            <div class="flex-1 space-y-2">
+              <div class="flex items-center justify-between flex-wrap gap-2">
+                <h3 class="text-lg font-serif font-semibold">Repo hygiene — un-track Miniconda installers, junk; fix <span class="mono text-base">.gitignore</span></h3>
+                <div class="flex gap-1.5 text-xs">
+                  <span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">Impact Med</span>
+                  <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">Risk Low</span>
+                  <span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">impact review</span>
+                </div>
+              </div>
+              <p class="text-sm text-slate-600"><span class="font-medium text-slate-800">Problem.</span> <span class="mono">.git</span> is 332 MB — Miniconda installers (~117 MB), old <span class="mono">webin-cli</span> jars, and <span class="mono">.DS_Store</span>/<span class="mono">._*</span> AppleDouble files all tracked; <span class="mono">.gitignore</span> only excludes conda dirs. <span class="font-medium text-slate-800">Do.</span> Delete from working tree, extend <span class="mono">.gitignore</span>, download Miniconda at install. <span class="text-slate-500">History purge to reclaim the 332 MB is a separate, higher-risk force-push — optional.</span></p>
+            </div>
+          </div>
+        </article>
+
+        <!-- 5 -->
+        <article class="rounded-xl border border-slate-200 bg-white p-5">
+          <div class="flex items-start gap-4">
+            <div class="shrink-0 w-9 h-9 rounded-full bg-indigo-600 text-white grid place-items-center font-semibold">5</div>
+            <div class="flex-1 space-y-2">
+              <div class="flex items-center justify-between flex-wrap gap-2">
+                <h3 class="text-lg font-serif font-semibold">Alignment module <span class="mono text-base">align(reads, ref) → bam</span></h3>
+                <div class="flex gap-1.5 text-xs">
+                  <span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">Impact Med–High</span>
+                  <span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">Risk Med</span>
+                  <span class="px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">depth review</span>
+                </div>
+              </div>
+              <p class="text-sm text-slate-600"><span class="font-medium text-slate-800">Problem.</span> The bowtie2/bwa build→align→view→sort→index chain is one behaviour re-typed at ~28 sites (97 samtools calls across 11 files); <span class="mono">bowtiePE</span>/<span class="mono">bwaPE</span> proved the small interface but never left the assembly module. <span class="font-medium text-slate-800">Do.</span> Promote to a shared module returning a sorted BAM. Sits on top of the runner (2).</p>
+              <ul class="flex flex-wrap gap-x-5 gap-y-1 text-xs text-slate-600"><li>• locality: alignment tuning in one place</li><li>• two adapters behind one seam: bowtie2 + bwa</li></ul>
+            </div>
+          </div>
+        </article>
+
+        <!-- 6 -->
+        <article class="rounded-xl border border-slate-200 bg-white p-5">
+          <div class="flex items-start gap-4">
+            <div class="shrink-0 w-9 h-9 rounded-full bg-slate-900 text-white grid place-items-center font-semibold">6</div>
+            <div class="flex-1 space-y-2">
+              <div class="flex items-center justify-between flex-wrap gap-2">
+                <h3 class="text-lg font-serif font-semibold">Extract a headless pipeline module — move the GUI↔pipeline seam</h3>
+                <div class="flex gap-1.5 text-xs">
+                  <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">Impact High</span>
+                  <span class="px-2 py-0.5 rounded-full bg-red-100 text-red-800">Risk Med–High</span>
+                  <span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-300">both lenses</span>
+                </div>
+              </div>
+              <p class="text-sm text-slate-600"><span class="font-medium text-slate-800">Problem.</span> Pipeline logic is a side-effect blob inside <span class="mono">Ui_Form.performAssembly</span> — no return values, state via <span class="mono">os.chdir</span> + files + the log widget. The test surface <em>is</em> the Qt widget. <span class="font-medium text-slate-800">Do.</span> Extract <span class="mono">assemble(config, log=cb) → result</span>; the GUI becomes a thin adapter. Enables HPC batch + CI runs. <span class="text-amber-700 font-medium">Largest item — attempt only after 1 (tests) and 2 (runner) exist.</span></p>
+            </div>
+          </div>
+        </article>
+
+        <!-- 7 -->
+        <article class="rounded-xl border border-slate-200 bg-white p-5">
+          <div class="flex items-start gap-4">
+            <div class="shrink-0 w-9 h-9 rounded-full bg-emerald-600 text-white grid place-items-center font-semibold">7</div>
+            <div class="flex-1 space-y-2">
+              <div class="flex items-center justify-between flex-wrap gap-2">
+                <h3 class="text-lg font-serif font-semibold">Fix the committed <span class="mono text-base">GRACy.py</span> artifact + hardcoded HPC path</h3>
+                <div class="flex gap-1.5 text-xs">
+                  <span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">Impact Med</span>
+                  <span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">Risk Low–Med</span>
+                  <span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">impact review</span>
+                </div>
+              </div>
+              <p class="text-sm text-slate-600"><span class="font-medium text-slate-800">Problem.</span> <span class="mono">GRACy.py</span> is a build artifact <span class="mono">install.sh</span> regenerates, yet the committed copy bakes in <span class="mono">/home3/scc20x/…</span> (lines 1–2) — a fresh clone is broken until install runs. <span class="font-medium text-slate-800">Do.</span> Gitignore it and generate at install, or template the path cleanly. <span class="text-slate-500">Cheap and blocks nothing — a quick-win you can pull into the first block.</span></p>
+            </div>
+          </div>
+        </article>
+
+        <!-- 8 -->
+        <article class="rounded-xl border border-slate-200 bg-white p-5">
+          <div class="flex items-start gap-4">
+            <div class="shrink-0 w-9 h-9 rounded-full bg-slate-900 text-white grid place-items-center font-semibold">8</div>
+            <div class="flex-1 space-y-2">
+              <div class="flex items-center justify-between flex-wrap gap-2">
+                <h3 class="text-lg font-serif font-semibold">Config module — keyed, validated parsing</h3>
+                <div class="flex gap-1.5 text-xs">
+                  <span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">Impact Med</span>
+                  <span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">Risk Med</span>
+                  <span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-300">both lenses</span>
+                </div>
+              </div>
+              <p class="text-sm text-slate-600"><span class="font-medium text-slate-800">Problem.</span> <span class="mono">assembly.conf</span> is parsed positionally (<span class="mono">readline().split("\t")[1]</span>), schema-less and copy-pasted; a reordered or missing line silently shifts every field. <span class="font-medium text-slate-800">Do.</span> One config module parsing to a typed, validated object shared across modules; malformed configs fail loudly at load. Pairs with <span class="mono">assemble(config)</span> from 6.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- 9 -->
+        <article class="rounded-xl border border-slate-200 bg-white p-5">
+          <div class="flex items-start gap-4">
+            <div class="shrink-0 w-9 h-9 rounded-full bg-emerald-600 text-white grid place-items-center font-semibold">9</div>
+            <div class="flex-1 space-y-2">
+              <div class="flex items-center justify-between flex-wrap gap-2">
+                <h3 class="text-lg font-serif font-semibold"><span class="mono text-base">os.system</span> → <span class="mono text-base">subprocess.run([...], shell=False)</span> — injection safety</h3>
+                <div class="flex gap-1.5 text-xs">
+                  <span class="px-2 py-0.5 rounded-full bg-slate-200 text-slate-700">Impact Low–Med*</span>
+                  <span class="px-2 py-0.5 rounded-full bg-red-100 text-red-800">Risk High</span>
+                  <span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">impact review</span>
+                </div>
+              </div>
+              <p class="text-sm text-slate-600"><span class="font-medium text-slate-800">Problem.</span> User-supplied args (project name, file paths) concatenated raw into shell strings — injectable. <span class="text-slate-500">*Low consequence in a trusted lab; high if ever distributed.</span> <span class="font-medium text-slate-800">Do.</span> Convert to argument lists behind the runner (2). <strong>~428 of the 858 calls (about half) rely on shell features</strong> (pipes, redirects, <span class="mono">&amp;</span>, <span class="mono">cd</span>, globs), so a blind <span class="mono">shell=False</span> conversion breaks them — incremental only, behind the test net. Once the runner exists, this becomes changing one module's implementation.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- 10 -->
+        <article class="rounded-xl border border-slate-200 bg-white p-5">
+          <div class="flex items-start gap-4">
+            <div class="shrink-0 w-9 h-9 rounded-full bg-emerald-600 text-white grid place-items-center font-semibold">10</div>
+            <div class="flex-1 space-y-2">
+              <div class="flex items-center justify-between flex-wrap gap-2">
+                <h3 class="text-lg font-serif font-semibold">Collapse the Python 2 env (RAGOUT now runs on Py3)</h3>
+                <div class="flex gap-1.5 text-xs">
+                  <span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">Impact Med</span>
+                  <span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">Risk Med</span>
+                  <span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">impact review</span>
+                </div>
+              </div>
+              <p class="text-sm text-slate-600"><span class="font-medium text-slate-800">Problem.</span> <span class="mono">install.sh</span> builds a second EOL Python 2 conda env solely for RAGOUT scaffolding. <span class="font-medium text-slate-800">Do.</span> Move RAGOUT to Py3, single env, simpler install. Scaffolding is science-sensitive — verify output is unchanged under the smoke test (1) before removing the old env.</p>
+            </div>
+          </div>
+        </article>
+
+      </section>
+
+      <!-- ===== Tail ===== -->
+      <section class="rounded-xl border border-slate-200 bg-white/60 p-5">
+        <h2 class="text-sm uppercase tracking-wider text-slate-500 mb-2">Also — easy polish (below the top 10)</h2>
+        <p class="text-sm text-slate-600"><span class="font-medium">11 · Polish</span> <span class="text-xs px-2 py-0.5 rounded-full bg-slate-200 text-slate-600">Impact Low · Risk Low–Med</span> — fix the 201 <span class="mono">&gt;null</span> redirects (a literal file named <span class="mono">null</span>, not <span class="mono">/dev/null</span>), the four log/UI typos, and write a real README for this fork. Mechanical; verify under the smoke test.</p>
+      </section>
+
+      <!-- ===== Sequence ===== -->
+      <section id="sequence" class="rounded-xl border-2 border-slate-800 bg-slate-800 text-slate-100 p-8 space-y-4">
+        <p class="text-xs uppercase tracking-[0.2em] text-emerald-300">Recommended sequence</p>
+        <h2 class="text-2xl font-serif font-semibold">Dependencies matter more than the raw ranking.</h2>
+        <div class="rounded-lg border border-slate-700 bg-slate-900 p-4">
+          <pre class="mermaid">
+flowchart LR
+  T["1 · smoke test + CI"]:::first --> R["2 · runner"]:::first
+  D["3 · delete dead"]:::first -.soft.-> R
+  H["4 · hygiene"]:::easy
+  R --> A["5 · alignment"]:::arch
+  R --> P["6 · headless pipeline"]:::arch
+  T --> P
+  A --> P
+  P --> C["8 · config"]:::arch
+  R --> S["9 · subprocess safety"]:::guard
+  T --> Y["10 · py2 collapse"]:::guard
+  AR["7 · GRACy.py artifact"]:::easy
+  classDef first fill:#064e3b,stroke:#10b981,color:#d1fae5;
+  classDef arch fill:#312e81,stroke:#818cf8,color:#e0e7ff;
+  classDef easy fill:#334155,stroke:#94a3b8,color:#e2e8f0;
+  classDef guard fill:#7f1d1d,stroke:#f87171,color:#fee2e2;
+          </pre>
+        </div>
+        <p class="text-slate-300 text-sm max-w-3xl">Block one (do this month): <strong>1 → 2 → 3 → 4</strong> — all high value, low risk, and 1 makes everything after it safe. (3 is a <em>soft</em> precondition for 2: delete the dead copies first so you're not editing files that never run.) Then structural work <strong>5 → 6 → 8</strong> behind the test net, with <strong>7</strong> anytime. The higher-risk modernisation (<strong>9, 10</strong>) rides on the runner and the tests already being in place.</p>
+      </section>
+
+      <footer class="text-xs text-slate-400 pt-2">Merged from the correctness/hygiene (impact × risk) and depth (seams / deletion test) reviews. All figures verified against source on 2026-07-09.</footer>
+
+    </main>
+  </body>
+</html>

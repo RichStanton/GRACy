@@ -26,6 +26,17 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 
 
+def collectKmers(sequence, kmerLength):
+	"""Return the successive kmerLength-mers of sequence, left to right.
+
+	Both read-loading loops share this so k-mer enumeration always tracks the
+	kmerLength derived from the database. BUG-3 (issue #4): the dedupFile2 loop
+	previously hardcoded a fixed length of 17, so counts drifted silently
+	whenever kmerLength was not 17.
+	"""
+	return [sequence[a:a + kmerLength] for a in range(0, len(sequence) - kmerLength + 1)]
+
+
 class Ui_Form(object):
 	def setupUi(self, Form,installationDirectory):
 		Form.setObjectName("Form")
@@ -475,15 +486,15 @@ class Ui_Form(object):
 				revSequence = str(seq_record.seq.reverse_complement())
 				reads.append(str(seq_record.seq))
 				reads.append(str(seq_record.seq.reverse_complement()))
-				for a in range(0,len(sequence)-kmerLength+1):
-					if not sequence[a:a+kmerLength] in readsKmer:
-						readsKmer[sequence[a:a+kmerLength]] = []
-					readsKmer[sequence[a:a+kmerLength]].append(str(seq_record.id))
+				for kmer in collectKmers(sequence,kmerLength):
+					if not kmer in readsKmer:
+						readsKmer[kmer] = []
+					readsKmer[kmer].append(str(seq_record.id))
 
-				for a in range(0,len(revSequence)-kmerLength+1):
-					if not revSequence[a:a+kmerLength] in readsKmer:
-						readsKmer[revSequence[a:a+kmerLength]] = []
-					readsKmer[revSequence[a:a+kmerLength]].append(str(seq_record.id))
+				for kmer in collectKmers(revSequence,kmerLength):
+					if not kmer in readsKmer:
+						readsKmer[kmer] = []
+					readsKmer[kmer].append(str(seq_record.id))
 
 				numSeq +=1
 				#if numSeq == int(numReads/2):
@@ -508,15 +519,15 @@ class Ui_Form(object):
 				revSequence = str(seq_record.seq.reverse_complement())
 				reads.append(str(seq_record.seq))
 				reads.append(str(seq_record.seq.reverse_complement()))
-				for a in range(0,len(sequence)-16):
-					if not sequence[a:a+17] in readsKmer:
-						readsKmer[sequence[a:a+17]] = []
-					readsKmer[sequence[a:a+17]].append(str(seq_record.id))
+				for kmer in collectKmers(sequence,kmerLength):
+					if not kmer in readsKmer:
+						readsKmer[kmer] = []
+					readsKmer[kmer].append(str(seq_record.id))
 
-				for a in range(0,len(revSequence)-16):
-					if not revSequence[a:a+17] in readsKmer:
-						readsKmer[revSequence[a:a+17]] = []
-					readsKmer[revSequence[a:a+17]].append(str(seq_record.id))
+				for kmer in collectKmers(revSequence,kmerLength):
+					if not kmer in readsKmer:
+						readsKmer[kmer] = []
+					readsKmer[kmer].append(str(seq_record.id))
 
 				numSeq +=1
 				#if numSeq == int(numReads/2):

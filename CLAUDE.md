@@ -3,6 +3,9 @@
 Operating guide for Claude Code in this repo. High-signal — it loads every session. It says **how we
 work** and **where things live**; depth lives in `operations/` (don't restate it here).
 
+> **Start here each session:** read the newest entry in `operations/journal/` (its `Next session`
+> section) and `operations/delivery/backlog.md` — that's what's in flight and where to pick up.
+
 ## What this is
 
 **GRACy** (Genome Research Assistant for CytomegaloVirus) — a desktop bioinformatics pipeline app for

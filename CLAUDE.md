@@ -18,24 +18,25 @@ Linux HPC environments and wet-lab scientists. This clone is a fork of
 | Path | What it is |
 |---|---|
 | `operations/architecture/ARCHITECTURE.md` | Current understanding of the codebase, pipeline stages, tool deps. |
-| `operations/delivery/README.md` | How work flows — tracker, labels, PR/merge method. |
+| `operations/delivery/README.md` | **The delivery process in full** — pipeline, labels, test-first execution, PR/merge. |
 | `operations/delivery/backlog.md` | Git-tracked index of the live work items (GitHub issues #2–#17). |
 | `operations/journal/` | Dated progress log — read the latest to see where things stand. |
 | `operations/decisions/` | ADRs, append-only. |
 | `operations/archive/` | Historical notes, not maintained (original code review). |
 | `src/` | Application code — Tkinter launcher, PyQt5 module GUIs, per-stage scripts. |
+| `tests/` | Regression tests (stdlib `unittest`). Run: `src/conda/bin/python -m unittest discover -s tests`. |
 | `data/` | Reference genome, example configs. |
 | `docs/agents/` | Agent-skill docs managed by `setup-matt-pocock-skills` — leave in place. |
 
 ## How we work
 
-- **Work = a GitHub issue** on `RichStanton/GRACy` (`gh`, always with `--repo RichStanton/GRACy` —
-  this clone has an `upstream` remote too). Pipeline: `grill-me`/`grill-with-docs` (align) → `to-prd`
-  (spec issue) → `to-issues` (vertical slices) → `triage` (gate to `ready-for-agent`) → `tdd`/`diagnose`
-  (execution).
+- **Work = a GitHub issue** on `RichStanton/GRACy`, taken **one issue → one PR**. Claude builds and
+  verifies on a branch; **you own decisions and merges**.
+- **Execution is test-first (`/tdd`)** — red → green → refactor; every change ships with its committed
+  test. `/diagnose` to investigate. Do **not** fix-first-test-after.
+- **Full pipeline, labels, and rules → [`operations/delivery/README.md`](operations/delivery/README.md).**
 - **Decisions that gate work or would surprise a future reader → an ADR** in `operations/decisions/`.
-- **One fact, one home — link, don't restate.** This file and `operations/` prose point at facts; they
-  don't duplicate them.
+- **One fact, one home — link, don't restate.** This file is the map; depth lives in `operations/`.
 
 ## Local dev
 

@@ -32,9 +32,8 @@ Linux HPC environments and wet-lab scientists. This clone is a fork of
 
 - **Work = a GitHub issue** on `RichStanton/GRACy`, taken **one issue → one PR**. Claude builds and
   verifies on a branch; **you own decisions and merges**.
-- **Execution is test-first (`/tdd`)** — red → green → refactor; every change ships with its committed
-  test. `/diagnose` to investigate. Do **not** fix-first-test-after.
-- **Full pipeline, labels, and rules → [`operations/delivery/README.md`](operations/delivery/README.md).**
+- **Execution is test-first (`/tdd`), not fix-first.** The full pipeline and the red→green loop live in
+  **[`operations/delivery/README.md`](operations/delivery/README.md)** — read it before executing.
 - **Decisions that gate work or would surprise a future reader → an ADR** in `operations/decisions/`.
 - **One fact, one home — link, don't restate.** This file is the map; depth lives in `operations/`.
 

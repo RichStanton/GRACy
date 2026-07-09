@@ -44,6 +44,31 @@ src/conda/bin/python -m unittest discover -s tests -v
 A pipeline-level end-to-end **smoke test** (on `testDataset/`, with a golden output + CI) is tracked
 as issue #11 — the safety net that makes the structural changes verifiable end to end.
 
+## Autonomous (AFK) execution
+
+When Claude works unattended, autonomy is bounded by the triage-label gate:
+
+- **Scope ceiling = the `ready-for-human` gate.** `ready-for-agent` issues are fair game AFK;
+  `ready-for-human` items (the structural work, #12+) are **never started** without the maintainer,
+  even when they sit next in the dependency order.
+- **Confirm the ceiling before a batch** — agree which issues are in scope up front.
+- **Packaging:** each **bug fix is its own PR** (it ships with its committed test); pure
+  **housekeeping issues are grouped** into one or two PRs to keep review load down.
+- **No self-merge.** Claude opens PRs and leaves them open; **the maintainer reviews and merges.**
+  A one-off "merge this" is a per-PR authorisation, not standing permission.
+- **Judgement calls go in the PR body.** If a fix turns out deeper than the issue described, or a
+  changed variable is dead/unused, say so in the PR so the reviewer can weigh it.
+
+## Tooling
+
+- **`gh` is authenticated** for this clone via `~/.config/gh/hosts.yml` (token scopes `repo`,
+  `project`; it lacks `read:org`, so `gh auth login` is bypassed by writing the config directly).
+  Always pass `-R RichStanton/GRACy` — default-repo resolution is ambiguous with `upstream` present.
+- **Pushes go through Claude's Linux `git`**, not the user's terminal (which authenticates as
+  `ikeddie`, no write access). See the journal's push-auth note.
+- **Run tests with the bundled interpreter**, headless: `QT_QPA_PLATFORM=offscreen
+  src/conda/bin/python -m unittest discover -s tests`.
+
 ## Other rules
 
 - **Decisions that gate work or would surprise a future reader → an ADR** in `operations/decisions/`.

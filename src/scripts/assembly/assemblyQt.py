@@ -140,7 +140,7 @@ class Ui_Form(object):
 	
 
 	def performAssembly(self):
-		if str(self.selectedFilesArea.toPlainText) == "":
+		if str(self.selectedFilesArea.toPlainText()) == "":
 			msg = QMessageBox()
 			msg.setIcon(QMessageBox.Warning)
 			msg.setText("No de novo configuration files has been selected.")

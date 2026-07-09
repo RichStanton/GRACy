@@ -191,7 +191,7 @@ class Ui_Form(object):
 		NumThreads = int(self.numThreadsEntry.text())
 		
 
-		if str(self.selectedFilesArea.toPlainText) == "":
+		if str(self.selectedFilesArea.toPlainText()) == "":
 			msg = QMessageBox()
 			msg.setIcon(QMessageBox.Warning)
 			msg.setText("No fastq files has been selected.")

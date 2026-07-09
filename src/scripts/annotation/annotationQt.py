@@ -120,7 +120,7 @@ class Ui_Form(object):
 		#**************************************************************************
 
 		outputFolder = self.outputFolderEntry.text()
-		if str(self.selectedFilesArea.toPlainText) == "":
+		if str(self.selectedFilesArea.toPlainText()) == "":
 			msg = QMessageBox()
 			msg.setIcon(QMessageBox.Warning)
 			msg.setText("No genome files has been selected.")

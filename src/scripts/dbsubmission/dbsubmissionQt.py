@@ -316,7 +316,7 @@ class Ui_Form(object):
 
 
 	def submitSamples(self):
-		if str(self.selectedFilesArea.toPlainText) == "":
+		if str(self.selectedFilesArea.toPlainText()) == "":
 			msg = QMessageBox()
 			msg.setIcon(QMessageBox.Warning)
 			msg.setText("No fastq files has been selected.")

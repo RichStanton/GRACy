@@ -180,6 +180,10 @@ class Ui_Form(object):
 				numCodonRefines = 0
 				#Find the best model for the gene *********************************************************
 				locus = f.replace("_models.fasta","")
+				# Initialise before first use: the "Check Exonerate output" loops below append
+				# to `warnings` before the old (misplaced) `warnings = []` ran, raising
+				# UnboundLocalError on that path (BUG-4, issue #5). Reset once per locus.
+				warnings = []
 				protSeqs = SeqIO.to_dict(SeqIO.parse(installationDirectory+"src/scripts/annotation/proteinDB/"+f,"fasta"))
 				#print "Choosing best match for protein",f
 				
@@ -265,7 +269,6 @@ class Ui_Form(object):
 
 				gene = {}
 				exon = {}
-				warnings = []
 				#Collect the exonerate output
 				while not line == "# --- END OF GFF DUMP ---":
 					line = exResult.readline().rstrip()
@@ -640,7 +643,6 @@ class Ui_Form(object):
 
 					gene = {}
 					exon = {}
-					warnings = []
 					#Collect the exonerate output
 					while not line == "# --- END OF GFF DUMP ---":
 						line = exResult.readline().rstrip()

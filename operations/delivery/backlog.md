@@ -40,8 +40,12 @@ Issues: <https://github.com/RichStanton/GRACy/issues>
 ## Status
 
 - **2026-07-09** — backlog filed (#2–#17); toolchain installed.
-  - **#2 (BUG-1)** — fixed + regression tests, **in review as [PR #18](https://github.com/RichStanton/GRACy/pull/18)**.
+  - **#2 (BUG-1)** — fixed + regression tests; **merged** ([PR #18](https://github.com/RichStanton/GRACy/pull/18)).
+  - **#4 (BUG-3)** — fixed test-first + regression tests, **in review as [PR #19](https://github.com/RichStanton/GRACy/pull/19)**.
+  - **#6 (BUG-5)** — fixed test-first + regression tests, **in review as [PR #20](https://github.com/RichStanton/GRACy/pull/20)**.
+  - **#5 (BUG-4)** — fixed test-first + AST regression test, **in review as [PR #21](https://github.com/RichStanton/GRACy/pull/21)**.
   - **#3 (BUG-2)** — reclassified Critical → **Low** (writes to dead code; no wrong genome). Deprioritised as tidy-up.
-  - **Next:** #4 (BUG-3) → #6 (BUG-5), executed test-first via `/tdd`. #11 (smoke test) unlocks
-    end-to-end verification for the structural items (#12–#17).
+  - **Next:** all confirmed bug hotfixes are delivered (PRs #19–#21 awaiting review). Block 1 of the
+    improvement plan resumes at **#11** (smoke test), which unlocks end-to-end verification for the
+    structural items (#12–#17).
   - Progress detail in the [journal](../journal/2026-07-09.md).

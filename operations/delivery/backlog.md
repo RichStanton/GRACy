@@ -39,6 +39,9 @@ Issues: <https://github.com/RichStanton/GRACy/issues>
 
 ## Status
 
-- **2026-07-09** — backlog filed (#2–#17). Recommended first sequence: BUG-2 (#3) → BUG-3 (#4) →
-  BUG-5 (#6), then #11 (smoke test) once the toolchain is installed. See the current
-  [journal entry](../journal/2026-07-09.md).
+- **2026-07-09** — backlog filed (#2–#17); toolchain installed.
+  - **#2 (BUG-1)** — fixed + regression tests, **in review as [PR #18](https://github.com/RichStanton/GRACy/pull/18)**.
+  - **#3 (BUG-2)** — reclassified Critical → **Low** (writes to dead code; no wrong genome). Deprioritised as tidy-up.
+  - **Next:** #4 (BUG-3) → #6 (BUG-5), executed test-first via `/tdd`. #11 (smoke test) unlocks
+    end-to-end verification for the structural items (#12–#17).
+  - Progress detail in the [journal](../journal/2026-07-09.md).

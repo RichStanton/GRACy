@@ -20,6 +20,11 @@ import numpy as nm
 import matplotlib.pyplot as plt
 
 
+# Length of the HCMV reference genome (bp), used to turn aligned breadth into a
+# coverage fraction. Defined once and shared by both coverage calculations (BUG-5,
+# issue #6); was previously hardcoded as a magic number at each site.
+HCMV_GENOME_SIZE = 235646.0
+
 
 class Ui_Form(object):
 	def setupUi(self, Form,installationDirectory):
@@ -733,7 +738,7 @@ class Ui_Form(object):
 					bfile.close()
 
 					datasetStatistics[dataset].append(str(breadthValue))
-					datasetStatistics[dataset].append(str( breadthValue / 235646.0 )[:4])
+					datasetStatistics[dataset].append(str( breadthValue / HCMV_GENOME_SIZE )[:4])
 
 
 
@@ -828,7 +833,7 @@ class Ui_Form(object):
 						bfile.close()
 
 						datasetStatistics[dataset].append(str(breadthValue))
-						datasetStatistics[dataset].append(str( breadthValue / 235646.0 )[:4])
+						datasetStatistics[dataset].append(str( breadthValue / HCMV_GENOME_SIZE )[:4])
 
 
 				os.system("mv tempReads_140875_1.fastq "+outputFolder+"/"+self.getPrefix(codes[(dataset[0].split("/"))[-1]])  +suffixCode+"_1.fastq")

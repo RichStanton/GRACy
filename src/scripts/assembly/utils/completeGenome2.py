@@ -11,8 +11,8 @@ def fuseSequences2(s1, s2):
 	toFuse = open("s2.fasta", "w")
 	toFuse.write(">s2\n"+s2+"\n")
 	toFuse.close()
-	os.system(installationDirectory+"src/conda/bin/makeblastdb -dbtype nucl -in s1.fasta  >null 2>&1")
-	os.system(installationDirectory+"src/conda/bin/blastn -query s2.fasta -db s1.fasta -outfmt 6 -dust no -soft_masking false -task blastn -out outputBlast.txt  >null 2>&1")
+	os.system(installationDirectory+"src/conda/bin/makeblastdb -dbtype nucl -in s1.fasta  >/dev/null 2>&1")
+	os.system(installationDirectory+"src/conda/bin/blastn -query s2.fasta -db s1.fasta -outfmt 6 -dust no -soft_masking false -task blastn -out outputBlast.txt  >/dev/null 2>&1")
 	blastFile = open("outputBlast.txt")
 
 	downstreamAlignment = []
@@ -70,7 +70,7 @@ os.system(installationDirectory+"/src/conda/bin/python joinScaffolds_careful.py 
 for seq_record in SeqIO.parse(genomeToComplete, "fasta"):
 	genomeToCompleteSeq = str(seq_record.seq)
 if os.path.isfile("joined_finalScaffold_1_2000_f.txt_finalScaffold_"+bestPos1+"_"+bestPos2+"_r.txt") == True:
-	print("5' end successfully reconstructed!")
+	print("5' end successfuly reconstructed!")
 	
 	for seq_record in SeqIO.parse("joined_finalScaffold_1_2000_f.txt_finalScaffold_"+bestPos1+"_"+bestPos2+"_r.txt", "fasta"):
 		firstPortion = str(seq_record.seq)
@@ -78,7 +78,7 @@ if os.path.isfile("joined_finalScaffold_1_2000_f.txt_finalScaffold_"+bestPos1+"_
 
 	firtPortionReconstructed = fuseSequences2(firstPortion, genomeToCompleteSeq)
 	if len(firtPortionReconstructed)>10:
-		print("firstPortion successuffly joined!")
+		print("firstPortion successfuly joined!")
 		genomeToCompleteSeq = firtPortionReconstructed
 		outfile = open("newGenome1.fasta","w")
 		outfile.write(">finalScaffold\n"+firtPortionReconstructed+"\n")
@@ -127,14 +127,14 @@ for seq_record in SeqIO.parse("newGenome1.fasta", "fasta"):
 	genomeToCompleteSeq = str(seq_record.seq)
 os.system(installationDirectory+"/src/conda/bin/python  joinScaffolds_careful.py join ../1_cleanReads/qualityFiltered_1.fq ../1_cleanReads/qualityFiltered_2.fq finalScaffold_"+str(len(genomeToCompleteSeq)-2000) + "_" + str(len(genomeToCompleteSeq))+"_f.txt f finalScaffold_"+bestPos1+"_"+bestPos2+"_r.txt f  "+installationDirectory+ " 8")
 if os.path.isfile("joined_finalScaffold_"+str(len(genomeToCompleteSeq)-2000) + "_" + str(len(genomeToCompleteSeq))+"_f.txt_finalScaffold_"+bestPos1+"_"+bestPos2+"_r.txt") == True:
-	print("3' end successfully reconstructed!")
+	print("3' end successfuly reconstructed!")
 	
 	for seq_record in SeqIO.parse("joined_finalScaffold_"+str(len(genomeToCompleteSeq)-2000) + "_" + str(len(genomeToCompleteSeq))+"_f.txt_finalScaffold_"+bestPos1+"_"+bestPos2+"_r.txt","fasta"):
 		lastPortion = str(seq_record.seq)
 
 	lastPortionReconstructed = fuseSequences2(genomeToCompleteSeq, lastPortion)
 	if len(lastPortionReconstructed) > 10:
-		print("last portion successuffly joined!")
+		print("last portion successfuly joined!")
 		genomeToCompleteSeq = lastPortionReconstructed
 		outfile = open("newGenome2.fasta", "w")
 		outfile.write(">finalScaffold\n"+genomeToCompleteSeq+"\n")

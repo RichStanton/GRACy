@@ -551,7 +551,7 @@ class Toplevel1:
 
 						else:
 						#if foundStartCodon == False or foundStopCodon == False or abs(int(len(cdsSeq)/3) - len(sequence))>10:
-							notes += "The prediction was not successfull! Now attempting a refinement....\n"
+							notes += "The prediction was not successful! Now attempting a refinement....\n"
 							self.logArea.configure(state='normal')
 							self.logArea.insert(tk.END, "Annotation needs refinement....\n")
 							self.logArea.see(tk.END)

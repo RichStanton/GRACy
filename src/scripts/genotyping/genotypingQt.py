@@ -324,7 +324,7 @@ class Ui_Form(object):
 			
 			
 			
-			os.system(installationDirectory+"src/conda/bin/bowtie2 -1 "+dedupFile1+" -2 "+dedupFile2+" -x "+installationDirectory+"src/scripts/genotyping/fastaFiles/hcmvReference -S alignmenthsbfy43223.sam >null 2>&1")
+			os.system(installationDirectory+"src/conda/bin/bowtie2 -1 "+dedupFile1+" -2 "+dedupFile2+" -x "+installationDirectory+"src/scripts/genotyping/fastaFiles/hcmvReference -S alignmenthsbfy43223.sam >/dev/null 2>&1")
 			
 			
 			self.logArea.repaint()
@@ -422,7 +422,7 @@ class Ui_Form(object):
 			numSeq = 0
 			overallGeneInfo = {}
 			
-			self.logArea.append("Caclculate kmer frequencies for file "+dedupFile1+"....")
+			self.logArea.append("Calculate kmer frequencies for file "+dedupFile1+"....")
 			self.logArea.repaint()
 			
 			
@@ -440,7 +440,7 @@ class Ui_Form(object):
 
 			numSeq = 0
 			
-			self.logArea.append("Caclculate kmer frequencies for file "+dedupFile2+"....")
+			self.logArea.append("Calculate kmer frequencies for file "+dedupFile2+"....")
 			self.logArea.repaint()
 			
 			

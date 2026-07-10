@@ -20,7 +20,7 @@ lens surfaced it (impact review / depth review / both).
 | 8 | Config module — keyed, validated parsing | Med | Med | both |
 | 9 | `os.system` → `subprocess.run([...], shell=False)` (injection safety) | Low–Med* | High | impact |
 | 10 | Collapse the Python 2 env (RAGOUT on Py3) | Med | Med | impact |
-| 11 | Polish — `>null`→`/dev/null` (201×), typos, fork README | Low | Low–Med | impact |
+| 11 | Polish — `>/dev/null`→`/dev/null` (201×), typos, fork README | Low | Low–Med | impact |
 
 \* Item 9 impact is low in a trusted lab; high if ever distributed.
 
@@ -68,7 +68,7 @@ That is why item 2 (return-code checking) outranks item 9 (injection safety).
 10. **Collapse the Python 2 env.** `install.sh` builds a second EOL Py2 env solely for RAGOUT.
     Move RAGOUT to Py3, single env. Scaffolding is science-sensitive — verify output unchanged
     under the smoke test before removing the old env.
-11. **Polish.** 201 `>null` redirects write a literal file named `null` (not `/dev/null`); four
+11. **Polish.** 201 `>/dev/null` redirects write a literal file named `null` (not `/dev/null`); four
     log/UI typos; a two-sentence README for this fork.
 
 ## Recommended sequence

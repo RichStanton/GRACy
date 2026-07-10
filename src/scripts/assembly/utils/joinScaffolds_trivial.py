@@ -52,8 +52,8 @@ def fuseSequences2(s1,s2):
     toFuse = open("s2.fasta","w")
     toFuse.write(">s2\n"+s2+"\n")
     toFuse.close()
-    os.system(installationDirectory+"src/conda/bin/makeblastdb -dbtype nucl -in s1.fasta >null 2>&1")
-    os.system(installationDirectory+"src/conda/bin/blastn -query s2.fasta -db s1.fasta -outfmt 6 -task blastn  -dust no -soft_masking false -out outputBlast.txt  >null 2>&1")
+    os.system(installationDirectory+"src/conda/bin/makeblastdb -dbtype nucl -in s1.fasta >/dev/null 2>&1")
+    os.system(installationDirectory+"src/conda/bin/blastn -query s2.fasta -db s1.fasta -outfmt 6 -task blastn  -dust no -soft_masking false -out outputBlast.txt  >/dev/null 2>&1")
     blastFile = open("outputBlast.txt")
 
     downstreamAlignment = []
@@ -106,7 +106,7 @@ while True:
         tempFile = open("tempFasta.fasta","w")
         tempFile.write(">tempFasta\n"+elongedSequence[-overlap:]+"\n")
         tempFile.close()
-        os.system(installationDirectory+"src/conda/bin/blat reads.fasta tempFasta.fasta -t=dna -q=dna -out=blast8 output.psl -fastMap >null 2>&1")
+        os.system(installationDirectory+"src/conda/bin/blat reads.fasta tempFasta.fasta -t=dna -q=dna -out=blast8 output.psl -fastMap >/dev/null 2>&1")
 
         infile = open("output.psl")
         for homology in range(100,95,-1):

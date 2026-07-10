@@ -354,7 +354,7 @@ python <installDir>/src/scripts/<module>/<module>Qt.py <installDir>
 | Committed `GRACy.py` is a build artifact with a stale hardcoded HPC path (lines 1–2) | `GRACy.py` | Low–Med |
 | macOS `.DS_Store` / `._*` AppleDouble files committed | Throughout | Low |
 | No test suite (`testDataset/` has 4 input FASTQs but no golden output) | Repo root | Medium |
-| `>null` redirects write a literal file named `null`, not `/dev/null` (201×) | Throughout | Low |
+| `>/dev/null` redirects write a literal file named `null`, not `/dev/null` (201×) | Throughout | Low |
 | Linux-only despite partial `sys.platform == "win32"` checks | Throughout | Low |
 
 ---

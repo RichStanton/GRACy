@@ -193,7 +193,7 @@ class Toplevel1:
 						self.logArea.see(tk.END)
 						self.logArea.configure(state='disabled')
 						self.logArea.update()
-						os.system(installationDirectory+"src/conda/bin/bowtie2 -1 "+dedupFile1+" -2 "+dedupFile2+" -x "+installationDirectory+"src/scripts/genotyping/fastaFiles/hcmvReference -S alignmenthsbfy43223.sam >null 2>&1")
+						os.system(installationDirectory+"src/conda/bin/bowtie2 -1 "+dedupFile1+" -2 "+dedupFile2+" -x "+installationDirectory+"src/scripts/genotyping/fastaFiles/hcmvReference -S alignmenthsbfy43223.sam >/dev/null 2>&1")
 						self.logArea.configure(state='normal')
 						self.logArea.insert(tk.END, "Done!\n")
 						self.logArea.see(tk.END)
@@ -284,7 +284,7 @@ class Toplevel1:
 						numSeq = 0
 						overallGeneInfo = {}
 						self.logArea.configure(state='normal')
-						self.logArea.insert(tk.END, "Caclculate kmer frequencies for file "+dedupFile1+"....")
+						self.logArea.insert(tk.END, "Calculate kmer frequencies for file "+dedupFile1+"....")
 						self.logArea.see(tk.END)
 						self.logArea.configure(state='disabled')
 						self.logArea.update()
@@ -301,7 +301,7 @@ class Toplevel1:
 
 						numSeq = 0
 						self.logArea.configure(state='normal')
-						self.logArea.insert(tk.END, "Caclculate kmer frequencies for file "+dedupFile2+"....")
+						self.logArea.insert(tk.END, "Calculate kmer frequencies for file "+dedupFile2+"....")
 						self.logArea.see(tk.END)
 						self.logArea.configure(state='disabled')
 						self.logArea.update()

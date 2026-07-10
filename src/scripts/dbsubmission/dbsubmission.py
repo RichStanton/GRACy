@@ -221,7 +221,7 @@ class Toplevel1:
                 
 
                 self.logArea.configure(state='normal')
-                self.logArea.insert(tk.END, "isTest: "+str(isTest)+"\n"+"inputFolder: "+str(inputFolder)+"\nfilesToSubmit: "+str(filesToSubmit)+"\nCreatePoject: "+str(createProject)+"\nCreateSample: "+str(createSample)+"\nProjectInfo: "+str(projectInfo)+"\nSampleInfo: "+str(sampleInfo)+"\nReadsInfo: "+str(readsInfo)+"\n\n")
+                self.logArea.insert(tk.END, "isTest: "+str(isTest)+"\n"+"inputFolder: "+str(inputFolder)+"\nfilesToSubmit: "+str(filesToSubmit)+"\nCreateProject: "+str(createProject)+"\nCreateSample: "+str(createSample)+"\nProjectInfo: "+str(projectInfo)+"\nSampleInfo: "+str(sampleInfo)+"\nReadsInfo: "+str(readsInfo)+"\n\n")
                 self.logArea.see(tk.END)
                 self.logArea.configure(state='disabled')
                 self.logArea.update()

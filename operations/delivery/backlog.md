@@ -23,7 +23,7 @@ Issues: <https://github.com/RichStanton/GRACy/issues>
 | [#7](https://github.com/RichStanton/GRACy/issues/7) | Delete the dead non-Qt twins (+ `.bak`, `._*` copies) | — |
 | [#8](https://github.com/RichStanton/GRACy/issues/8) | Repo hygiene — un-track Miniconda installers/junk; extend `.gitignore` | — |
 | [#9](https://github.com/RichStanton/GRACy/issues/9) | Fix committed `GRACy.py` artifact + hardcoded HPC path | — |
-| [#10](https://github.com/RichStanton/GRACy/issues/10) | Polish — `>null`→`/dev/null` (201×), typos, fork README | — |
+| [#10](https://github.com/RichStanton/GRACy/issues/10) | Polish — `>/dev/null`→`/dev/null` (201×), typos, fork README | — |
 | [#11](https://github.com/RichStanton/GRACy/issues/11) | End-to-end smoke test on `testDataset/` + CI (safety net) | toolchain install |
 
 ## Improvement plan — structural (`ready-for-human`, HITL)

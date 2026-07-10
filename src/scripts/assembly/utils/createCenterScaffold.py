@@ -29,7 +29,7 @@ os.system(installationDirectory+"src/conda2/bin/python "+installationDirectory+"
 
 
 
-#os.system("scaffold_builder_v2.py -q ../2_spadesAssembly/scaffolds.fasta -r merlinGenome_190000_200000_f.txt -p sb2 >null 2>&1")
+#os.system("scaffold_builder_v2.py -q ../2_spadesAssembly/scaffolds.fasta -r merlinGenome_190000_200000_f.txt -p sb2 >/dev/null 2>&1")
 #Check the sb2_scaffold file for anomalous bases
 outfile = open("temp.fasta","w")
 for seq_record in SeqIO.parse("sb2_Scaffold.fasta","fasta"):
@@ -68,7 +68,7 @@ os.system(installationDirectory+"src/conda/bin/python "+installationDirectory+"s
 #os.system("cat ../2_spadesAssembly/scaffolds.fasta "+bestAlignment[0]+"_"+str(bestAlignment[3])+"_"+str(bestAlignment[4])+"_f.txt >scaffolds.fasta ")
 
 #Next command is changed with the following
-#os.system(installationDirectory+"resources/scaffold_builder_v2.py -q ../2_spadesAssembly/scaffolds.fasta -r /home3/scc20x/hcmvReference/hcmv_genome.fasta -p sb >null 2>&1")
+#os.system(installationDirectory+"resources/scaffold_builder_v2.py -q ../2_spadesAssembly/scaffolds.fasta -r /home3/scc20x/hcmvReference/hcmv_genome.fasta -p sb >/dev/null 2>&1")
 os.system(installationDirectory+"src/conda2/bin/ragout --overwrite genome_recepie.rcp")
 
 

@@ -328,9 +328,9 @@ class Ui_Form(object):
 			os.system("mkdir -p "+sampleTempFolder)
 			os.system(installationDirectory+"src/conda/bin/python "+installationDirectory+"src/conda/bin/bowtie2-build "+referenceFile+" ./"+sampleTempFolder+"/reference -q")
 
-			print("Analising sample",sampleName)
+			print("Analyzing sample",sampleName)
 			
-			self.logArea.append("Analising sample"+sampleName+"....")
+			self.logArea.append("Analyzing sample"+sampleName+"....")
 			self.logArea.repaint()
 			
 			

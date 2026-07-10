@@ -123,9 +123,9 @@ class Toplevel1:
 						os.system("mkdir -p "+sampleTempFolder)
 						os.system(installationDirectory+"src/conda/bin/python "+installationDirectory+"src/conda/bin/bowtie2-build "+referenceFile+" ./"+sampleTempFolder+"/reference -q")
 
-						print("Analising sample",sampleName)
+						print("Analyzing sample",sampleName)
 						self.logArea.configure(state='normal')
-						self.logArea.insert(tk.END, "Analising sample"+sampleName+"....\n")
+						self.logArea.insert(tk.END, "Analyzing sample"+sampleName+"....\n")
 						self.logArea.see(tk.END)
 						self.logArea.configure(state='disabled')
 						self.logArea.update()

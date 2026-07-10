@@ -178,7 +178,7 @@ if str(self.selectedFilesArea.toPlainText()) == "":
 
 **File:** `src/scripts/assembly/utils/completeGenome.py:105`
 
-The function writes the variable `firstPortion` where it should write `lastPortion`. This silently produces an incorrect FASTA output — the last segment of the genome is replaced by a copy of the first segment. The assembly will appear to complete successfully but the output sequence will be wrong.
+The function writes the variable `firstPortion` where it should write `lastPortion`. This silently produces an incorrect FASTA output — the last segment of the genome is replaced by a copy of the first segment. The assembly will appear to complete successfuly but the output sequence will be wrong.
 
 ```python
 # Wrong — writes firstPortion twice

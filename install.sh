@@ -15,6 +15,10 @@ else
 	rm installation.log
 	fi
 	touch installation.log
+	if ! test -f "Miniconda3-latest-Linux-x86_64.sh"; then
+		echo "Downloading Miniconda3 installer...."
+		wget -q https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+	fi
 	bash Miniconda3-latest-Linux-x86_64.sh -b -p ./conda >> installation.log
 	cd ../
 	if  test -f "./src/conda/bin/conda"; then
@@ -350,6 +354,10 @@ else
 
 
 	cd src
+	if ! test -f "Miniconda2-latest-Linux-x86_64.sh"; then
+		echo "Downloading Miniconda2 installer...."
+		wget -q https://repo.anaconda.com/miniconda/Miniconda2-latest-Linux-x86_64.sh
+	fi
 	bash Miniconda2-latest-Linux-x86_64.sh -b -p ./conda2 >> installation.log
 	cd ../
 	if  test -f "./src/conda2/bin/conda"; then

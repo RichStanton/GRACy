@@ -9,3 +9,14 @@ README.fuller-draft.md
 # Python bytecode
 __pycache__/
 *.pyc
+
+# macOS junk (issue #8)
+.DS_Store
+._*
+
+# Editor/backup files (issue #7)
+*.bak
+
+# Miniconda installers — install.sh downloads these on demand (issue #8)
+src/Miniconda3-latest-Linux-x86_64.sh
+src/Miniconda2-latest-Linux-x86_64.sh

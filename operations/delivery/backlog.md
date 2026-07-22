@@ -16,6 +16,12 @@ Issues: <https://github.com/RichStanton/GRACy/issues>
 | [#5](https://github.com/RichStanton/GRACy/issues/5) | BUG-4: `warnings` used before declaration in `annotationQt.py` | — |
 | [#6](https://github.com/RichStanton/GRACy/issues/6) | BUG-5: hardcoded HCMV genome size `235646.0` in `readsFilteringQt.py` (×2) | — |
 
+## Bugs from testing — `ready-for-agent`
+
+| # | Title | Blocked by |
+|---|---|---|
+| [#23](https://github.com/RichStanton/GRACy/issues/23) | BUG-6: `QMessageBox` never imported in assembly/annotation/snpCalling — input guards raise NameError to terminal (latent bug unmasked by #2) | — |
+
 ## Improvement plan — mechanical (`ready-for-agent`)
 
 | # | Title | Blocked by |

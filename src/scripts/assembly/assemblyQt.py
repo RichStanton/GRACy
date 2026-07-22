@@ -103,23 +103,23 @@ class Ui_Form(object):
 
 
 	def bowtiePE(self,reference,read1,read2,numTh):
-		os.system(installationDirectory+"src/conda/bin/python "+installationDirectory+"src/conda/bin/bowtie2-build "+reference+" reference -q >null 2>&1")
+		os.system(installationDirectory+"src/conda/bin/python "+installationDirectory+"src/conda/bin/bowtie2-build "+reference+" reference -q >/dev/null 2>&1")
 
 		os.system(installationDirectory+"src/conda/bin/bowtie2  -1 "+read1+" -2 "+read2+" -x reference -S test.sam -p "+numTh)
-		os.system(installationDirectory+"src/conda/bin/samtools view -bS -h test.sam > test.bam 2>null")
-		os.system(installationDirectory+"src/conda/bin/samtools sort -o test_sorted.bam test.bam >null 2>&1")
+		os.system(installationDirectory+"src/conda/bin/samtools view -bS -h test.sam > test.bam 2>/dev/null")
+		os.system(installationDirectory+"src/conda/bin/samtools sort -o test_sorted.bam test.bam >/dev/null 2>&1")
 
 
 
 	def bwaPE(self,reference,read1,read2,alName,numThreads,editDist):
-		os.system(installationDirectory+"src/conda/bin/bwa index "+reference+" >null 2>&1")
-		os.system(installationDirectory+"src/conda/bin/bwa aln "+reference+" "+read1+" -t "+numThreads+" -n "+editDist+" -k "+editDist+" >read1.sai 2>null")
-		os.system(installationDirectory+"src/conda/bin/bwa aln "+reference+" "+read2+" -t "+numThreads+" -n "+editDist+" -k "+editDist+" >read2.sai 2>null")
-		os.system(installationDirectory+"src/conda/bin/bwa sampe "+reference+" read1.sai read2.sai "+read1+" "+read2+" >"+alName+".sam 2>null")
+		os.system(installationDirectory+"src/conda/bin/bwa index "+reference+" >/dev/null 2>&1")
+		os.system(installationDirectory+"src/conda/bin/bwa aln "+reference+" "+read1+" -t "+numThreads+" -n "+editDist+" -k "+editDist+" >read1.sai 2>/dev/null")
+		os.system(installationDirectory+"src/conda/bin/bwa aln "+reference+" "+read2+" -t "+numThreads+" -n "+editDist+" -k "+editDist+" >read2.sai 2>/dev/null")
+		os.system(installationDirectory+"src/conda/bin/bwa sampe "+reference+" read1.sai read2.sai "+read1+" "+read2+" >"+alName+".sam 2>/dev/null")
 		os.system(installationDirectory+"src/conda/bin/python "+installationDirectory+"src/scripts/assembly/utils/cleanSoftAndUnmapped.py "+alName+".sam")
-		os.system(installationDirectory+"src/conda/bin/samtools view -bS "+alName+".sam_cleaned.sam > "+alName+".bam 2>null")
-		os.system(installationDirectory+"src/conda/bin/samtools sort -o "+alName+"_sorted.bam "+alName+".bam >null 2>&1")
-		os.system(installationDirectory+"src/conda/bin/samtools index "+alName+"_sorted.bam >null 2>&1")
+		os.system(installationDirectory+"src/conda/bin/samtools view -bS "+alName+".sam_cleaned.sam > "+alName+".bam 2>/dev/null")
+		os.system(installationDirectory+"src/conda/bin/samtools sort -o "+alName+"_sorted.bam "+alName+".bam >/dev/null 2>&1")
+		os.system(installationDirectory+"src/conda/bin/samtools index "+alName+"_sorted.bam >/dev/null 2>&1")
 
 	confFiles = []
 
@@ -337,7 +337,7 @@ class Ui_Form(object):
 
 
 			#***************************************************************
-			#******************* 3 Scaffold Oriantation ********************
+			#******************* 3 Scaffold Orientation ********************
 			#***************************************************************
 			confFile.readline() #Read comment
 			performScaffolding = ((confFile.readline().rstrip()).split("\t"))[1]
@@ -499,48 +499,48 @@ class Ui_Form(object):
 				
 				
 
-				os.system(installationDirectory+"src/conda/bin/samtools view -bF 4 test_sorted.bam >mapped.bam 2>null")
+				os.system(installationDirectory+"src/conda/bin/samtools view -bF 4 test_sorted.bam >mapped.bam 2>/dev/null")
 
 				
-				self.logArea.append("*  *  Adding gorup names")
+				self.logArea.append("*  *  Adding group names")
 				self.logArea.repaint()
 				
 				
 				
 
 
-				os.system(installationDirectory+"src/conda/bin/picard AddOrReplaceReadGroups I=mapped.bam O=rg_added_sorted.bam SO=coordinate RGID=id RGLB=library RGPL=Ilumina RGPU=machine RGSM=Consensus")# >null 2>&1")
+				os.system(installationDirectory+"src/conda/bin/picard AddOrReplaceReadGroups I=mapped.bam O=rg_added_sorted.bam SO=coordinate RGID=id RGLB=library RGPL=Ilumina RGPU=machine RGSM=Consensus")# >/dev/null 2>&1")
 				
 				self.logArea.append("*  *  Deduplicating")
 				self.logArea.repaint()
 				
 				
 				
-				os.system(installationDirectory+"src/conda/bin/picard MarkDuplicates I=rg_added_sorted.bam O=dedupped.bam  CREATE_INDEX=true VALIDATION_STRINGENCY=SILENT M=output.metrics >null 2>&1")
+				os.system(installationDirectory+"src/conda/bin/picard MarkDuplicates I=rg_added_sorted.bam O=dedupped.bam  CREATE_INDEX=true VALIDATION_STRINGENCY=SILENT M=output.metrics >/dev/null 2>&1")
 				
 				self.logArea.append("*  *  Calling polymorphisms")
 				self.logArea.repaint()
 				
 				
-				os.system(installationDirectory+"src/conda/bin/picard CreateSequenceDictionary R=finalScaffold_1_15001_f.txt >null 2>&1")
+				os.system(installationDirectory+"src/conda/bin/picard CreateSequenceDictionary R=finalScaffold_1_15001_f.txt >/dev/null 2>&1")
 				os.system(installationDirectory+"src/conda/bin/samtools faidx finalScaffold_1_15001_f.txt")
 				#os.system(installationDirectory+"src/conda2/bin/bcftools mpileup -f finalScaffold_1_15001_f.txt dedupped.bam | "+installationDirectory+"src/conda2/bin/bcftools call -mv -Ov -o output.vcf")
 				#os.system(installationDirectory+"src/conda/bin/lofreq call-parallel --pp-threads "+self.numThreadsCombo.currentText()+" -q 30 -Q 30 --call-indels  -f finalScaffold_1_15001_f.txt -o output.vcf dedupped.bam")
-				#os.system("java -jar  "+installationDirectory+"resources/GenomeAnalysisTK.jar -T  HaplotypeCaller -R finalScaffold_1_15001_f.txt -I dedupped.bam  -o output.vcf -A StrandAlleleCountsBySample >null 2>&1")
+				#os.system("java -jar  "+installationDirectory+"resources/GenomeAnalysisTK.jar -T  HaplotypeCaller -R finalScaffold_1_15001_f.txt -I dedupped.bam  -o output.vcf -A StrandAlleleCountsBySample >/dev/null 2>&1")
 				os.system(installationDirectory+"src/conda/bin/samtools mpileup -f finalScaffold_1_15001_f.txt dedupped.bam > pileup.txt")
 				os.system(installationDirectory+"src/conda/bin/varscan mpileup2cns pileup.txt --variants --output-vcf 1 --strand-filter 0 > output.vcf")
 				os.system(installationDirectory+"src/conda/bin/python "+installationDirectory+"src/scripts/assembly/utils/varscanFilter.py -i output.vcf -o output_filtered.vcf")
-				#os.system(installationDirectory+"src/conda/bin/python "+installationDirectory+"src/scripts/assembly/utils/getMajorAllele.py output.vcf output_filtered.vcf >null 2>&1")
+				#os.system(installationDirectory+"src/conda/bin/python "+installationDirectory+"src/scripts/assembly/utils/getMajorAllele.py output.vcf output_filtered.vcf >/dev/null 2>&1")
 				os.system(installationDirectory+"src/conda/bin/perl "+installationDirectory+"src/scripts/assembly/utils/vcf-sort output_filtered.vcf >temp.vcf ; mv temp.vcf output_filtered.vcf")
-				os.system(installationDirectory+"src/conda/bin/bgzip -c output_filtered.vcf > output_filtered.vcf.gz 2>null")
-				os.system(installationDirectory+"src/conda/bin/tabix output_filtered.vcf.gz >null 2>&1")
+				os.system(installationDirectory+"src/conda/bin/bgzip -c output_filtered.vcf > output_filtered.vcf.gz 2>/dev/null")
+				os.system(installationDirectory+"src/conda/bin/tabix output_filtered.vcf.gz >/dev/null 2>&1")
 				
 				self.logArea.append("*  *  Creating consensus")
 				self.logArea.repaint()
 				
 				
 				
-				os.system("cat finalScaffold_1_15001_f.txt | "+installationDirectory+"src/conda2/bin/bcftools consensus output_filtered.vcf.gz > finalScaffold_1_15001_f.txt_con.fasta 2>null")
+				os.system("cat finalScaffold_1_15001_f.txt | "+installationDirectory+"src/conda2/bin/bcftools consensus output_filtered.vcf.gz > finalScaffold_1_15001_f.txt_con.fasta 2>/dev/null")
 				os.system("mv output.vcf output_firstPortion.vcf")
 				os.system("mv output_filtered.vcf  output_firstPortion_filtered.vcf")
 				os.system("rm -f test*")
@@ -568,14 +568,14 @@ class Ui_Form(object):
 				
 				
 				
-				os.system(installationDirectory+"src/conda/bin/samtools view -bF 4 test_sorted.bam >mapped.bam 2>null")
+				os.system(installationDirectory+"src/conda/bin/samtools view -bF 4 test_sorted.bam >mapped.bam 2>/dev/null")
 				
-				self.logArea.append("*  *  Adding gorup names")
+				self.logArea.append("*  *  Adding group names")
 				self.logArea.repaint()
 				
 				
 				
-				os.system(installationDirectory+"src/conda/bin/picard AddOrReplaceReadGroups I=mapped.bam O=rg_added_sorted.bam SO=coordinate RGID=id RGLB=library RGPL=Ilumina RGPU=machine RGSM=Consensus >null 2>&1")
+				os.system(installationDirectory+"src/conda/bin/picard AddOrReplaceReadGroups I=mapped.bam O=rg_added_sorted.bam SO=coordinate RGID=id RGLB=library RGPL=Ilumina RGPU=machine RGSM=Consensus >/dev/null 2>&1")
 				
 				self.logArea.append("*  *  Deduplicating")
 
@@ -583,14 +583,14 @@ class Ui_Form(object):
 				
 				
 				
-				os.system(installationDirectory+"src/conda/bin/picard MarkDuplicates I=rg_added_sorted.bam O=dedupped.bam  CREATE_INDEX=true VALIDATION_STRINGENCY=SILENT M=output.metrics >null 2>&1")
+				os.system(installationDirectory+"src/conda/bin/picard MarkDuplicates I=rg_added_sorted.bam O=dedupped.bam  CREATE_INDEX=true VALIDATION_STRINGENCY=SILENT M=output.metrics >/dev/null 2>&1")
 				
 				self.logArea.append("*  *  Calling polymorphisms")
 				self.logArea.repaint()
 				
 				
 				
-				os.system(installationDirectory+"src/conda/bin/picard CreateSequenceDictionary R=finalScaffold_15001_"+str(assemblyLength -10000 )+"_f.txt >null 2>&1")
+				os.system(installationDirectory+"src/conda/bin/picard CreateSequenceDictionary R=finalScaffold_15001_"+str(assemblyLength -10000 )+"_f.txt >/dev/null 2>&1")
 				os.system(installationDirectory+"src/conda/bin/samtools faidx finalScaffold_15001_"+str(assemblyLength -10000 )+"_f.txt")
 				#os.system(installationDirectory+"src/conda2/bin/bcftools mpileup -f finalScaffold_15001_"+str(assemblyLength -10000 )+"_f.txt dedupped.bam | "+installationDirectory+"src/conda2/bin/bcftools call -mv -Ov -o output.vcf")
 				#os.system(installationDirectory+"src/conda/bin/lofreq call-parallel  --pp-threads "+self.numThreadsCombo.currentText()+" -q 30 -Q 30 --call-indels  -f finalScaffold_15001_"+str(assemblyLength -10000 )+"_f.txt -o output.vcf dedupped.bam")
@@ -598,18 +598,18 @@ class Ui_Form(object):
 				os.system(installationDirectory+"src/conda/bin/varscan mpileup2cns pileup.txt --variants --output-vcf 1 --strand-filter 0  > output.vcf")
 				os.system(installationDirectory+"src/conda/bin/python "+installationDirectory+"src/scripts/assembly/utils/varscanFilter.py -i output.vcf -o output_filtered.vcf")
 				os.system(installationDirectory+"src/conda/bin/perl "+installationDirectory+"src/scripts/assembly/utils/vcf-sort output_filtered.vcf >temp.vcf ; mv temp.vcf output_filtered.vcf")
-				os.system(installationDirectory+"src/conda/bin/bgzip -c output_filtered.vcf > output_filtered.vcf.gz 2>null")
-				os.system(installationDirectory+"src/conda/bin/tabix output_filtered.vcf.gz >null 2>&1")
-				#os.system("java -jar  "+installationDirectory+"resources/GenomeAnalysisTK.jar -T  HaplotypeCaller -R finalScaffold_15001_"+str(assemblyLength -10000 )+"_f.txt -I dedupped.bam  -o output.vcf -A StrandAlleleCountsBySample >null 2>&1")
-				#os.system(installationDirectory+"resources/bgzip -c output.vcf_filtered.vcf > output.vcf_filtered.vcf.gz 2>null")
-				#os.system(installationDirectory+"resources/tabix output.vcf_filtered.vcf.gz >null 2>&1")
+				os.system(installationDirectory+"src/conda/bin/bgzip -c output_filtered.vcf > output_filtered.vcf.gz 2>/dev/null")
+				os.system(installationDirectory+"src/conda/bin/tabix output_filtered.vcf.gz >/dev/null 2>&1")
+				#os.system("java -jar  "+installationDirectory+"resources/GenomeAnalysisTK.jar -T  HaplotypeCaller -R finalScaffold_15001_"+str(assemblyLength -10000 )+"_f.txt -I dedupped.bam  -o output.vcf -A StrandAlleleCountsBySample >/dev/null 2>&1")
+				#os.system(installationDirectory+"resources/bgzip -c output.vcf_filtered.vcf > output.vcf_filtered.vcf.gz 2>/dev/null")
+				#os.system(installationDirectory+"resources/tabix output.vcf_filtered.vcf.gz >/dev/null 2>&1")
 				
 				self.logArea.append("*  *  Creating consensus")
 				self.logArea.repaint()
 				
 				
 				
-				os.system("cat finalScaffold_15001_"+str(assemblyLength -10000 )+"_f.txt | "+installationDirectory+"src/conda2/bin/bcftools consensus output_filtered.vcf.gz > finalScaffold_15001_"+str(assemblyLength -10000 )+"_f.txt_con.fasta 2>null")
+				os.system("cat finalScaffold_15001_"+str(assemblyLength -10000 )+"_f.txt | "+installationDirectory+"src/conda2/bin/bcftools consensus output_filtered.vcf.gz > finalScaffold_15001_"+str(assemblyLength -10000 )+"_f.txt_con.fasta 2>/dev/null")
 				os.system("mv output.vcf output_secondPortion.vcf")
 				os.system("mv output_filtered.vcf  output_filtered_secondPortion.vcf")
 				os.system("rm -f test*")
@@ -636,28 +636,28 @@ class Ui_Form(object):
 				
 				
 				
-				os.system(installationDirectory+"src/conda/bin/samtools view -bF 4 test_sorted.bam >mapped.bam 2>null")
+				os.system(installationDirectory+"src/conda/bin/samtools view -bF 4 test_sorted.bam >mapped.bam 2>/dev/null")
 				
-				self.logArea.append("*  *  Adding gorup names")
+				self.logArea.append("*  *  Adding group names")
 				self.logArea.repaint()
 				
 				
 				
-				os.system(installationDirectory+"src/conda/bin/picard AddOrReplaceReadGroups I=mapped.bam O=rg_added_sorted.bam SO=coordinate RGID=id RGLB=library RGPL=Ilumina RGPU=machine RGSM=Consensus >null 2>&1")
+				os.system(installationDirectory+"src/conda/bin/picard AddOrReplaceReadGroups I=mapped.bam O=rg_added_sorted.bam SO=coordinate RGID=id RGLB=library RGPL=Ilumina RGPU=machine RGSM=Consensus >/dev/null 2>&1")
 				
 				self.logArea.append("*  *  Deduplicating")
 				self.logArea.repaint()
 				
 				
 				
-				os.system(installationDirectory+"src/conda/bin/picard MarkDuplicates I=rg_added_sorted.bam O=dedupped.bam  CREATE_INDEX=true VALIDATION_STRINGENCY=SILENT M=output.metrics >null 2>&1")
+				os.system(installationDirectory+"src/conda/bin/picard MarkDuplicates I=rg_added_sorted.bam O=dedupped.bam  CREATE_INDEX=true VALIDATION_STRINGENCY=SILENT M=output.metrics >/dev/null 2>&1")
 				
 				self.logArea.append("*  *  Calling polymorphisms")
 				self.logArea.repaint()
 				
 				
 				
-				os.system(installationDirectory+"src/conda/bin/picard CreateSequenceDictionary R=finalScaffold_"+str(assemblyLength - 10000 )+"_2000000_f.txt >null 2>&1")
+				os.system(installationDirectory+"src/conda/bin/picard CreateSequenceDictionary R=finalScaffold_"+str(assemblyLength - 10000 )+"_2000000_f.txt >/dev/null 2>&1")
 				os.system(installationDirectory+"src/conda/bin/samtools faidx finalScaffold_"+str(assemblyLength - 10000 )+"_2000000_f.txt")
 				#os.system(installationDirectory+"src/conda2/bin/bcftools mpileup -f finalScaffold_"+str(assemblyLength - 10000 )+"_2000000_f.txt dedupped.bam | "+installationDirectory+"src/conda2/bin/bcftools call -mv -Ov -o output.vcf")
 				#os.system(installationDirectory+"src/conda/bin/lofreq  call-parallel --pp-threads "+self.numThreadsCombo.currentText()+" -q 30 -Q 30 --call-indels -f finalScaffold_"+str(assemblyLength - 10000 )+"_2000000_f.txt -o output.vcf dedupped.bam")
@@ -665,19 +665,19 @@ class Ui_Form(object):
 				os.system(installationDirectory+"src/conda/bin/varscan mpileup2cns pileup.txt --variants --output-vcf 1 --strand-filter 0 > output.vcf")
 				os.system(installationDirectory+"src/conda/bin/python "+installationDirectory+"src/scripts/assembly/utils/varscanFilter.py -i output.vcf -o output_filtered.vcf")
 				os.system(installationDirectory+"src/conda/bin/perl "+installationDirectory+"src/scripts/assembly/utils//vcf-sort output_filtered.vcf >temp.vcf ; mv temp.vcf output_filtered.vcf")
-				os.system(installationDirectory+"src/conda/bin/bgzip -c output_filtered.vcf > output_filtered.vcf.gz 2>null")
-				os.system(installationDirectory+"src/conda/bin/tabix output_filtered.vcf.gz >null 2>&1")
-				#os.system("java -jar  "+installationDirectory+"resources/GenomeAnalysisTK.jar -T  HaplotypeCaller -R finalScaffold_"+str(assemblyLength - 10000 )+"_2000000_f.txt -I dedupped.bam  -o output.vcf -A StrandAlleleCountsBySample >null 2>&1")
-				#os.system(installationDirectory+"resources/filterVCF.py output.vcf >null 2>&1")
-				#os.system(installationDirectory+"resources/bgzip -c output.vcf_filtered.vcf > output.vcf_filtered.vcf.gz 2>null")
-				#os.system(installationDirectory+"resources/tabix output.vcf_filtered.vcf.gz >null 2>&1")
+				os.system(installationDirectory+"src/conda/bin/bgzip -c output_filtered.vcf > output_filtered.vcf.gz 2>/dev/null")
+				os.system(installationDirectory+"src/conda/bin/tabix output_filtered.vcf.gz >/dev/null 2>&1")
+				#os.system("java -jar  "+installationDirectory+"resources/GenomeAnalysisTK.jar -T  HaplotypeCaller -R finalScaffold_"+str(assemblyLength - 10000 )+"_2000000_f.txt -I dedupped.bam  -o output.vcf -A StrandAlleleCountsBySample >/dev/null 2>&1")
+				#os.system(installationDirectory+"resources/filterVCF.py output.vcf >/dev/null 2>&1")
+				#os.system(installationDirectory+"resources/bgzip -c output.vcf_filtered.vcf > output.vcf_filtered.vcf.gz 2>/dev/null")
+				#os.system(installationDirectory+"resources/tabix output.vcf_filtered.vcf.gz >/dev/null 2>&1")
 				
 				self.logArea.append("*  *  Creating consensus")
 				self.logArea.repaint()
 				
 				
 				
-				os.system("cat finalScaffold_"+str(assemblyLength - 10000 )+"_2000000_f.txt | "+installationDirectory+"src/conda2/bin/bcftools consensus output_filtered.vcf.gz > finalScaffold_"+str(assemblyLength - 10000 )+"_2000000_f.txt_con.fasta 2>null")
+				os.system("cat finalScaffold_"+str(assemblyLength - 10000 )+"_2000000_f.txt | "+installationDirectory+"src/conda2/bin/bcftools consensus output_filtered.vcf.gz > finalScaffold_"+str(assemblyLength - 10000 )+"_2000000_f.txt_con.fasta 2>/dev/null")
 				os.system("mv output.vcf output_thirdPortion.vcf")
 				os.system("mv output_filtered.vcf  output_filtered_thirdPortion.vcf")
 				os.system("rm -f test*")
@@ -709,7 +709,7 @@ class Ui_Form(object):
 				
 				
 				now = datetime.datetime.now()
-				logFile.write("First consensus calline ended at "+now.strftime("%H:%M")+"\n\n")
+				logFile.write("First consensus calling ended at "+now.strftime("%H:%M")+"\n\n")
 				os.chdir("../")
 			else:
 				if os.path.isfile("./4_createConsensus/"+projectName+"_genome.fasta")==False:
@@ -774,7 +774,7 @@ class Ui_Form(object):
 					
 					
 					self.bwaPE("newReference.fasta",read1,read2,"test",self.numThreadsCombo.currentText(),"0.02") #Change here the number of threads
-					os.system(installationDirectory+"src/conda/bin/samtools faidx newReference.fasta >null 2>&1")
+					os.system(installationDirectory+"src/conda/bin/samtools faidx newReference.fasta >/dev/null 2>&1")
 					print("Calculating coverage on assembly....")
 					
 					self.logArea.append("*  Looking for low coverage regions ")
@@ -782,7 +782,7 @@ class Ui_Form(object):
 					
 					
 					
-					os.system(installationDirectory+"src/conda/bin/samtools mpileup -f newReference.fasta test_sorted.bam >finalPileup.txt 2>null")
+					os.system(installationDirectory+"src/conda/bin/samtools mpileup -f newReference.fasta test_sorted.bam >finalPileup.txt 2>/dev/null")
 					
 					self.logArea.append("*  Masking low coverage regions ")
 					self.logArea.repaint()
@@ -833,10 +833,10 @@ class Ui_Form(object):
 								#os.system("mv joinScaffold_trivialSeq.fasta finalScaffold_"+str(int(fields[1])+500)+"_"+str(int(fields[1])+1500)+"_greedy.fasta")
 
 							else:
-								print("The algorithm joinScaffold was sucessful on range",line)
+								print("The algorithm joinScaffold was successful on range",line)
 								#break
 						else:
-							print("The algorithm joinScaffold_careful was sucessful on range",line)
+							print("The algorithm joinScaffold_careful was successful on range",line)
 							#break
 
 
@@ -971,48 +971,48 @@ class Ui_Form(object):
 				
 				
 
-				os.system(installationDirectory+"src/conda/bin/samtools view -bF 4 test_sorted.bam >mapped.bam 2>null")
+				os.system(installationDirectory+"src/conda/bin/samtools view -bF 4 test_sorted.bam >mapped.bam 2>/dev/null")
 
 				
-				self.logArea.append("*  *  Adding gorup names")
+				self.logArea.append("*  *  Adding group names")
 				self.logArea.repaint()
 				
 				
 				
 
 
-				os.system(installationDirectory+"src/conda/bin/picard AddOrReplaceReadGroups I=mapped.bam O=rg_added_sorted.bam SO=coordinate RGID=id RGLB=library RGPL=Ilumina RGPU=machine RGSM=Consensus")# >null 2>&1")
+				os.system(installationDirectory+"src/conda/bin/picard AddOrReplaceReadGroups I=mapped.bam O=rg_added_sorted.bam SO=coordinate RGID=id RGLB=library RGPL=Ilumina RGPU=machine RGSM=Consensus")# >/dev/null 2>&1")
 				
 				self.logArea.append("*  *  Deduplicating")
 				self.logArea.repaint()
 				
 				
 				
-				os.system(installationDirectory+"src/conda/bin/picard MarkDuplicates I=rg_added_sorted.bam O=dedupped.bam  CREATE_INDEX=true VALIDATION_STRINGENCY=SILENT M=output.metrics >null 2>&1")
+				os.system(installationDirectory+"src/conda/bin/picard MarkDuplicates I=rg_added_sorted.bam O=dedupped.bam  CREATE_INDEX=true VALIDATION_STRINGENCY=SILENT M=output.metrics >/dev/null 2>&1")
 				
 				self.logArea.append("*  *  Calling polymorphisms")
 				self.logArea.repaint()
 				
 				
 				
-				os.system(installationDirectory+"src/conda/bin/picard CreateSequenceDictionary R=finalScaffold_1_15001_f.txt >null 2>&1")
+				os.system(installationDirectory+"src/conda/bin/picard CreateSequenceDictionary R=finalScaffold_1_15001_f.txt >/dev/null 2>&1")
 				os.system(installationDirectory+"src/conda/bin/samtools faidx finalScaffold_1_15001_f.txt")
 				#os.system(installationDirectory+"src/conda2/bin/bcftools mpileup -f finalScaffold_1_15001_f.txt dedupped.bam | "+installationDirectory+"src/conda2/bin/bcftools call -mv -Ov -o output.vcf")
 				#os.system(installationDirectory+"src/conda/bin/lofreq  call-parallel --pp-threads "+self.numThreadsCombo.currentText()+" -q 30 -Q 30 --call-indels -f finalScaffold_1_15001_f.txt -o output.vcf dedupped.bam")
-				#os.system("java -jar  "+installationDirectory+"resources/GenomeAnalysisTK.jar -T  HaplotypeCaller -R finalScaffold_1_15001_f.txt -I dedupped.bam  -o output.vcf -A StrandAlleleCountsBySample >null 2>&1")
+				#os.system("java -jar  "+installationDirectory+"resources/GenomeAnalysisTK.jar -T  HaplotypeCaller -R finalScaffold_1_15001_f.txt -I dedupped.bam  -o output.vcf -A StrandAlleleCountsBySample >/dev/null 2>&1")
 				os.system(installationDirectory+"src/conda/bin/samtools mpileup -f finalScaffold_1_15001_f.txt dedupped.bam > pileup.txt")
 				os.system(installationDirectory+"src/conda/bin/varscan mpileup2cns pileup.txt --variants --output-vcf 1 --strand-filter 0 > output.vcf")
 				os.system(installationDirectory+"src/conda/bin/python "+installationDirectory+"src/scripts/assembly/utils/varscanFilter.py -i output.vcf -o output_filtered.vcf")
 				os.system(installationDirectory+"src/conda/bin/perl "+installationDirectory+"src/scripts/assembly/utils/vcf-sort output_filtered.vcf >temp.vcf ; mv temp.vcf output_filtered.vcf")
-				os.system(installationDirectory+"src/conda/bin/bgzip -c output_filtered.vcf > output_filtered.vcf.gz 2>null")
-				os.system(installationDirectory+"src/conda/bin/tabix output_filtered.vcf.gz >null 2>&1")
+				os.system(installationDirectory+"src/conda/bin/bgzip -c output_filtered.vcf > output_filtered.vcf.gz 2>/dev/null")
+				os.system(installationDirectory+"src/conda/bin/tabix output_filtered.vcf.gz >/dev/null 2>&1")
 				
 				self.logArea.append("*  *  Creating consensus")
 				self.logArea.repaint()
 				
 				
 				
-				os.system("cat finalScaffold_1_15001_f.txt | "+installationDirectory+"src/conda2/bin/bcftools consensus output_filtered.vcf.gz > finalScaffold_1_15001_f.txt_con.fasta 2>null")
+				os.system("cat finalScaffold_1_15001_f.txt | "+installationDirectory+"src/conda2/bin/bcftools consensus output_filtered.vcf.gz > finalScaffold_1_15001_f.txt_con.fasta 2>/dev/null")
 				os.system("mv output.vcf output_firstPortion.vcf")
 				os.system("mv output_filtered.vcf  output_firstPortion_filtered.vcf")
 				os.system("rm -f test*")
@@ -1040,47 +1040,47 @@ class Ui_Form(object):
 				
 				
 				
-				os.system(installationDirectory+"src/conda/bin/samtools view -bF 4 test_sorted.bam >mapped.bam 2>null")
+				os.system(installationDirectory+"src/conda/bin/samtools view -bF 4 test_sorted.bam >mapped.bam 2>/dev/null")
 				
-				self.logArea.append("*  *  Adding gorup names")
+				self.logArea.append("*  *  Adding group names")
 				self.logArea.repaint()
 				
 				
-				os.system(installationDirectory+"src/conda/bin/picard AddOrReplaceReadGroups I=mapped.bam O=rg_added_sorted.bam SO=coordinate RGID=id RGLB=library RGPL=Ilumina RGPU=machine RGSM=Consensus >null 2>&1")
+				os.system(installationDirectory+"src/conda/bin/picard AddOrReplaceReadGroups I=mapped.bam O=rg_added_sorted.bam SO=coordinate RGID=id RGLB=library RGPL=Ilumina RGPU=machine RGSM=Consensus >/dev/null 2>&1")
 				
 				self.logArea.append("*  *  Deduplicating")
 				self.logArea.repaint()
 				
 				
 				
-				os.system(installationDirectory+"src/conda/bin/picard MarkDuplicates I=rg_added_sorted.bam O=dedupped.bam  CREATE_INDEX=true VALIDATION_STRINGENCY=SILENT M=output.metrics >null 2>&1")
+				os.system(installationDirectory+"src/conda/bin/picard MarkDuplicates I=rg_added_sorted.bam O=dedupped.bam  CREATE_INDEX=true VALIDATION_STRINGENCY=SILENT M=output.metrics >/dev/null 2>&1")
 				
 				self.logArea.append("*  *  Calling polymorphisms")
 				self.logArea.repaint()
 				
 				
 				
-				os.system(installationDirectory+"src/conda/bin/picard CreateSequenceDictionary R=finalScaffold_15001_"+str(assemblyLength -10000 )+"_f.txt >null 2>&1")
+				os.system(installationDirectory+"src/conda/bin/picard CreateSequenceDictionary R=finalScaffold_15001_"+str(assemblyLength -10000 )+"_f.txt >/dev/null 2>&1")
 				os.system(installationDirectory+"src/conda/bin/samtools faidx finalScaffold_15001_"+str(assemblyLength -10000 )+"_f.txt")
 				#os.system(installationDirectory+"src/conda2/bin/bcftools mpileup -f finalScaffold_15001_"+str(assemblyLength -10000 )+"_f.txt dedupped.bam | "+installationDirectory+"src/conda2/bin/bcftools call -mv -Ov -o output.vcf")
 				#os.system(installationDirectory+"src/conda/bin/lofreq  call-parallel --pp-threads "+self.numThreadsCombo.currentText()+" -q 30 -Q 30 --call-indels -f finalScaffold_15001_"+str(assemblyLength -10000 )+"_f.txt -o output.vcf dedupped.bam")
-				#os.system(installationDirectory+"src/conda/bin/python "+installationDirectory+"src/scripts/assembly/utils/getMajorAllele.py output.vcf output_filtered.vcf >null 2>&1")
+				#os.system(installationDirectory+"src/conda/bin/python "+installationDirectory+"src/scripts/assembly/utils/getMajorAllele.py output.vcf output_filtered.vcf >/dev/null 2>&1")
 				os.system(installationDirectory+"src/conda/bin/samtools mpileup -f finalScaffold_15001_"+str(assemblyLength -10000 )+"_f.txt dedupped.bam > pileup.txt")
 				os.system(installationDirectory+"src/conda/bin/varscan mpileup2cns pileup.txt --variants --output-vcf 1 --strand-filter 0 > output.vcf")
 				os.system(installationDirectory+"src/conda/bin/python "+installationDirectory+"src/scripts/assembly/utils/varscanFilter.py -i output.vcf -o output_filtered.vcf")
 				os.system(installationDirectory+"src/conda/bin/perl "+installationDirectory+"src/scripts/assembly/utils/vcf-sort output_filtered.vcf >temp.vcf ; mv temp.vcf output_filtered.vcf")
-				os.system(installationDirectory+"src/conda/bin/bgzip -c output_filtered.vcf > output_filtered.vcf.gz 2>null")
-				os.system(installationDirectory+"src/conda/bin/tabix output_filtered.vcf.gz >null 2>&1")
-				#os.system("java -jar  "+installationDirectory+"resources/GenomeAnalysisTK.jar -T  HaplotypeCaller -R finalScaffold_15001_"+str(assemblyLength -10000 )+"_f.txt -I dedupped.bam  -o output.vcf -A StrandAlleleCountsBySample >null 2>&1")
-				#os.system(installationDirectory+"resources/bgzip -c output.vcf_filtered.vcf > output.vcf_filtered.vcf.gz 2>null")
-				#os.system(installationDirectory+"resources/tabix output.vcf_filtered.vcf.gz >null 2>&1")
+				os.system(installationDirectory+"src/conda/bin/bgzip -c output_filtered.vcf > output_filtered.vcf.gz 2>/dev/null")
+				os.system(installationDirectory+"src/conda/bin/tabix output_filtered.vcf.gz >/dev/null 2>&1")
+				#os.system("java -jar  "+installationDirectory+"resources/GenomeAnalysisTK.jar -T  HaplotypeCaller -R finalScaffold_15001_"+str(assemblyLength -10000 )+"_f.txt -I dedupped.bam  -o output.vcf -A StrandAlleleCountsBySample >/dev/null 2>&1")
+				#os.system(installationDirectory+"resources/bgzip -c output.vcf_filtered.vcf > output.vcf_filtered.vcf.gz 2>/dev/null")
+				#os.system(installationDirectory+"resources/tabix output.vcf_filtered.vcf.gz >/dev/null 2>&1")
 				
 				self.logArea.append("*  *  Creating consensus")
 				self.logArea.repaint()
 				
 				
 				
-				os.system("cat finalScaffold_15001_"+str(assemblyLength -10000 )+"_f.txt | "+installationDirectory+"src/conda2/bin/bcftools consensus output_filtered.vcf.gz > finalScaffold_15001_"+str(assemblyLength -10000 )+"_f.txt_con.fasta 2>null")
+				os.system("cat finalScaffold_15001_"+str(assemblyLength -10000 )+"_f.txt | "+installationDirectory+"src/conda2/bin/bcftools consensus output_filtered.vcf.gz > finalScaffold_15001_"+str(assemblyLength -10000 )+"_f.txt_con.fasta 2>/dev/null")
 				os.system("mv output.vcf output_secondPortion.vcf")
 				os.system("mv output_filtered.vcf  output_filtered_secondPortion.vcf")
 				os.system("rm -f test*")
@@ -1108,49 +1108,49 @@ class Ui_Form(object):
 				
 				
 				
-				os.system(installationDirectory+"src/conda/bin/samtools view -bF 4 test_sorted.bam >mapped.bam 2>null")
+				os.system(installationDirectory+"src/conda/bin/samtools view -bF 4 test_sorted.bam >mapped.bam 2>/dev/null")
 				
-				self.logArea.append("*  *  Adding gorup names")
+				self.logArea.append("*  *  Adding group names")
 				self.logArea.repaint()
 				
 				
 				
-				os.system(installationDirectory+"src/conda/bin/picard AddOrReplaceReadGroups I=mapped.bam O=rg_added_sorted.bam SO=coordinate RGID=id RGLB=library RGPL=Ilumina RGPU=machine RGSM=Consensus >null 2>&1")
+				os.system(installationDirectory+"src/conda/bin/picard AddOrReplaceReadGroups I=mapped.bam O=rg_added_sorted.bam SO=coordinate RGID=id RGLB=library RGPL=Ilumina RGPU=machine RGSM=Consensus >/dev/null 2>&1")
 				
 				self.logArea.append("*  *  Deduplicating")
 				self.logArea.repaint()
 				
 				
 				
-				os.system(installationDirectory+"src/conda/bin/picard MarkDuplicates I=rg_added_sorted.bam O=dedupped.bam  CREATE_INDEX=true VALIDATION_STRINGENCY=SILENT M=output.metrics >null 2>&1")
+				os.system(installationDirectory+"src/conda/bin/picard MarkDuplicates I=rg_added_sorted.bam O=dedupped.bam  CREATE_INDEX=true VALIDATION_STRINGENCY=SILENT M=output.metrics >/dev/null 2>&1")
 				
 				self.logArea.append("*  *  Calling polymorphisms")
 				self.logArea.repaint()
 				
 				
 				
-				os.system(installationDirectory+"src/conda/bin/picard CreateSequenceDictionary R=finalScaffold_"+str(assemblyLength - 10000 )+"_2000000_f.txt >null 2>&1")
+				os.system(installationDirectory+"src/conda/bin/picard CreateSequenceDictionary R=finalScaffold_"+str(assemblyLength - 10000 )+"_2000000_f.txt >/dev/null 2>&1")
 				os.system(installationDirectory+"src/conda/bin/samtools faidx finalScaffold_"+str(assemblyLength - 10000 )+"_2000000_f.txt")
 				#os.system(installationDirectory+"src/conda2/bin/bcftools mpileup -f finalScaffold_"+str(assemblyLength - 10000 )+"_2000000_f.txt dedupped.bam | "+installationDirectory+"src/conda2/bin/bcftools call -mv -Ov -o output.vcf")
 				#os.system(installationDirectory+"src/conda/bin/lofreq  call-parallel --pp-threads "+self.numThreadsCombo.currentText()+" -q 30 -Q 30 --call-indels -f finalScaffold_"+str(assemblyLength - 10000 )+"_2000000_f.txt -o output.vcf dedupped.bam")
-				#os.system(installationDirectory+"src/conda/bin/python "+installationDirectory+"src/scripts/assembly/utils/getMajorAllele.py output.vcf output_filtered.vcf >null 2>&1")
+				#os.system(installationDirectory+"src/conda/bin/python "+installationDirectory+"src/scripts/assembly/utils/getMajorAllele.py output.vcf output_filtered.vcf >/dev/null 2>&1")
 				os.system(installationDirectory+"src/conda/bin/samtools mpileup -f finalScaffold_"+str(assemblyLength - 10000 )+"_2000000_f.txt dedupped.bam > pileup.txt")
 				os.system(installationDirectory+"src/conda/bin/varscan mpileup2cns pileup.txt --variants --output-vcf 1 --strand-filter 0 > output.vcf")
 				os.system(installationDirectory+"src/conda/bin/python "+installationDirectory+"src/scripts/assembly/utils/varscanFilter.py -i output.vcf -o output_filtered.vcf")
 				os.system(installationDirectory+"src/conda/bin/perl "+installationDirectory+"src/scripts/assembly/utils/vcf-sort output_filtered.vcf >temp.vcf ; mv temp.vcf output_filtered.vcf")
-				os.system(installationDirectory+"src/conda/bin/bgzip -c output_filtered.vcf > output_filtered.vcf.gz 2>null")
-				os.system(installationDirectory+"src/conda/bin/tabix output_filtered.vcf.gz >null 2>&1")
-				#os.system("java -jar  "+installationDirectory+"resources/GenomeAnalysisTK.jar -T  HaplotypeCaller -R finalScaffold_"+str(assemblyLength - 10000 )+"_2000000_f.txt -I dedupped.bam  -o output.vcf -A StrandAlleleCountsBySample >null 2>&1")
-				#os.system(installationDirectory+"resources/filterVCF.py output.vcf >null 2>&1")
-				#os.system(installationDirectory+"resources/bgzip -c output.vcf_filtered.vcf > output.vcf_filtered.vcf.gz 2>null")
-				#os.system(installationDirectory+"resources/tabix output.vcf_filtered.vcf.gz >null 2>&1")
+				os.system(installationDirectory+"src/conda/bin/bgzip -c output_filtered.vcf > output_filtered.vcf.gz 2>/dev/null")
+				os.system(installationDirectory+"src/conda/bin/tabix output_filtered.vcf.gz >/dev/null 2>&1")
+				#os.system("java -jar  "+installationDirectory+"resources/GenomeAnalysisTK.jar -T  HaplotypeCaller -R finalScaffold_"+str(assemblyLength - 10000 )+"_2000000_f.txt -I dedupped.bam  -o output.vcf -A StrandAlleleCountsBySample >/dev/null 2>&1")
+				#os.system(installationDirectory+"resources/filterVCF.py output.vcf >/dev/null 2>&1")
+				#os.system(installationDirectory+"resources/bgzip -c output.vcf_filtered.vcf > output.vcf_filtered.vcf.gz 2>/dev/null")
+				#os.system(installationDirectory+"resources/tabix output.vcf_filtered.vcf.gz >/dev/null 2>&1")
 				
 				self.logArea.append("*  *  Creating consensus")
 				self.logArea.repaint()
 				
 				
 				
-				os.system("cat finalScaffold_"+str(assemblyLength - 10000 )+"_2000000_f.txt | "+installationDirectory+"src/conda2/bin/bcftools consensus output_filtered.vcf.gz > finalScaffold_"+str(assemblyLength - 10000 )+"_2000000_f.txt_con.fasta 2>null")
+				os.system("cat finalScaffold_"+str(assemblyLength - 10000 )+"_2000000_f.txt | "+installationDirectory+"src/conda2/bin/bcftools consensus output_filtered.vcf.gz > finalScaffold_"+str(assemblyLength - 10000 )+"_2000000_f.txt_con.fasta 2>/dev/null")
 				os.system("mv output.vcf output_thirdPortion.vcf")
 				os.system("mv output_filtered.vcf  output_filtered_thirdPortion.vcf")
 				os.system("rm -f test*")
@@ -1194,28 +1194,28 @@ class Ui_Form(object):
 				
 				
 				
-				os.system(installationDirectory+"src/conda/bin/samtools view -bF 4 test_sorted.bam >mapped.bam 2>null")
+				os.system(installationDirectory+"src/conda/bin/samtools view -bF 4 test_sorted.bam >mapped.bam 2>/dev/null")
 				
-				self.logArea.append("*  *  Adding gorup names")
+				self.logArea.append("*  *  Adding group names")
 				self.logArea.repaint()
 				
 				
 				
-				os.system(installationDirectory+"src/conda/bin/picard AddOrReplaceReadGroups I=mapped.bam O=rg_added_sorted.bam SO=coordinate RGID=id RGLB=library RGPL=Ilumina RGPU=machine RGSM=Consensus >null 2>&1")
+				os.system(installationDirectory+"src/conda/bin/picard AddOrReplaceReadGroups I=mapped.bam O=rg_added_sorted.bam SO=coordinate RGID=id RGLB=library RGPL=Ilumina RGPU=machine RGSM=Consensus >/dev/null 2>&1")
 				
 				self.logArea.append("*  *  Deduplicating")
 				self.logArea.repaint()
 				
 				
 				
-				os.system(installationDirectory+"src/conda/bin/picard MarkDuplicates I=rg_added_sorted.bam O=dedupped.bam  CREATE_INDEX=true VALIDATION_STRINGENCY=SILENT M=output.metrics >null 2>&1")
+				os.system(installationDirectory+"src/conda/bin/picard MarkDuplicates I=rg_added_sorted.bam O=dedupped.bam  CREATE_INDEX=true VALIDATION_STRINGENCY=SILENT M=output.metrics >/dev/null 2>&1")
 				
 				self.logArea.append("*  *  Calling polymorphisms")
 				self.logArea.repaint()
 				
 				
 				
-				os.system(installationDirectory+"src/conda/bin/picard CreateSequenceDictionary R="+projectName+"_genome.fasta >null 2>&1")
+				os.system(installationDirectory+"src/conda/bin/picard CreateSequenceDictionary R="+projectName+"_genome.fasta >/dev/null 2>&1")
 				os.system(installationDirectory+"src/conda/bin/samtools faidx "+projectName+"_genome.fasta")
 				os.system(installationDirectory+"src/conda/bin/samtools view -b -h -F 1024 dedupped.bam > dedupped_nodup.bam")
 				os.system(installationDirectory+"src/conda/bin/bam2fastq -o deduppedReads#.fastq --aligned --no-unaligned --force dedupped_nodup.bam")
@@ -1223,14 +1223,14 @@ class Ui_Form(object):
 				os.system(installationDirectory+"src/conda/bin/varscan mpileup2cns pileup.txt --variants --output-vcf 1 --strand-filter 0 > output.vcf")
 				os.system(installationDirectory+"src/conda/bin/python "+installationDirectory+"src/scripts/assembly/utils/varscanFilter.py -i output.vcf -o output_filtered.vcf -1 deduppedReads_1.fastq -g 1 -2 deduppedReads_2.fastq -r "+projectName+"_genome.fasta -p "+installationDirectory )
 				os.system(installationDirectory+"src/conda/bin/perl "+installationDirectory+"src/scripts/assembly/utils/vcf-sort output_filtered.vcf >temp.vcf ; mv temp.vcf output_filtered.vcf")
-				os.system(installationDirectory+"src/conda/bin/bgzip -c output_filtered.vcf > output_filtered.vcf.gz 2>null")
-				os.system(installationDirectory+"src/conda/bin/tabix output_filtered.vcf.gz >null 2>&1")
+				os.system(installationDirectory+"src/conda/bin/bgzip -c output_filtered.vcf > output_filtered.vcf.gz 2>/dev/null")
+				os.system(installationDirectory+"src/conda/bin/tabix output_filtered.vcf.gz >/dev/null 2>&1")
 				self.logArea.append("*  *  Creating consensus")
 				self.logArea.repaint()
 				
 				
 				
-				os.system("cat "+projectName+"_genome.fasta | "+installationDirectory+"src/conda2/bin/bcftools consensus output_filtered.vcf.gz > "+projectName+"_genome.fasta_con.fasta 2>null")
+				os.system("cat "+projectName+"_genome.fasta | "+installationDirectory+"src/conda2/bin/bcftools consensus output_filtered.vcf.gz > "+projectName+"_genome.fasta_con.fasta 2>/dev/null")
 				os.system("mv output.vcf completeGenome.vcf")
 				os.system("mv output_filtered.vcf  completeGenome_filtered.vcf")
 				os.system("rm -f test*")
@@ -1246,7 +1246,7 @@ class Ui_Form(object):
 				
 				os.system("cp "+projectName+"_genome.fasta_con.fasta "+workingDirectory+"/"+projectName+"_genome.fasta")
 				now = datetime.datetime.now()
-				logFile.write("Second consensus calline ended at "+now.strftime("%H:%M")+"\n\n")
+				logFile.write("Second consensus calling ended at "+now.strftime("%H:%M")+"\n\n")
 				os.chdir("../")
 			else:
 				if os.path.isfile("./6_createConsensus/"+projectName+"_genome.fasta")==False:

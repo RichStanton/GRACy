@@ -11,8 +11,8 @@ def fuseSequences2(s1, s2):
 	toFuse = open("s2.fasta", "w")
 	toFuse.write(">s2\n"+s2+"\n")
 	toFuse.close()
-	os.system(installationDirectory+"src/conda/bin/makeblastdb -dbtype nucl -in s1.fasta  >null 2>&1")
-	os.system(installationDirectory+"src/conda/bin/blastn -query s2.fasta -db s1.fasta -outfmt 6 -dust no -soft_masking false -task blastn -out outputBlast.txt  >null 2>&1")
+	os.system(installationDirectory+"src/conda/bin/makeblastdb -dbtype nucl -in s1.fasta  >/dev/null 2>&1")
+	os.system(installationDirectory+"src/conda/bin/blastn -query s2.fasta -db s1.fasta -outfmt 6 -dust no -soft_masking false -task blastn -out outputBlast.txt  >/dev/null 2>&1")
 	blastFile = open("outputBlast.txt")
 
 	downstreamAlignment = []

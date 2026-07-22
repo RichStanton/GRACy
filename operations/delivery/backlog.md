@@ -55,3 +55,21 @@ Issues: <https://github.com/RichStanton/GRACy/issues>
     of the improvement plan resumes at **#11** (smoke test), which unlocks end-to-end verification for
     the structural items (#12–#17).
   - Progress detail in the [journal](../journal/2026-07-09.md).
+
+- **2026-07-22** — AFK batch: five PRs opened from `master`, all left **open for review** (no self-merge).
+  Held #11 (smoke test — golden output needs human validation).
+  - **#23 (BUG-6)** — `QMessageBox` never imported in assembly/annotation/snpCalling; input guards
+    raised `NameError` to the terminal instead of a dialog (unmasked by the #2 fix). Fixed test-first.
+    [PR #24](https://github.com/RichStanton/GRACy/pull/24).
+  - **#3 (BUG-2)** — `>lastPortion` record now written from `lastPortion` (dead-code twin; live pipeline
+    uses `completeGenome2.py`, unaffected). Test-first. [PR #25](https://github.com/RichStanton/GRACy/pull/25).
+  - **#9** — gitignore + untrack the generated `GRACy.py` launcher (stale foreign path). Verified fresh
+    clone + install regenerates it. [PR #26](https://github.com/RichStanton/GRACy/pull/26).
+  - **#7 + #8** — repo hygiene: removed 70 files (dead twins, `._*`/`.DS_Store`/`.bak`, Miniconda
+    installers); install.sh now downloads Miniconda on demand. **Kept `webin-cli-4.2.0.jar`** (live dep).
+    [PR #27](https://github.com/RichStanton/GRACy/pull/27).
+  - **#10** — `>null`→`/dev/null` (124× in live files), log/UI typos, fork README upstream link.
+    [PR #28](https://github.com/RichStanton/GRACy/pull/28). ⚠️ Overlaps pre-existing
+    [PR #22](https://github.com/RichStanton/GRACy/pull/22) (`nightcityblade`) which also closes #10 and
+    conflicts with #27 — maintainer to pick one.
+  - **Ordering note:** #27 deletes files that #22 edits; #28 was scoped to live files to compose with #27.

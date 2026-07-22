@@ -9,6 +9,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog 
 from PyQt5.QtWidgets import QInputDialog
+from PyQt5.QtWidgets import QMessageBox
 import sys
 from Bio import SeqIO
 from Bio.Seq import Seq

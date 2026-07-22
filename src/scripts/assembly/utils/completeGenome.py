@@ -102,7 +102,7 @@ for seq_record in SeqIO.parse("newGenome1.fasta","fasta"):
 
 lastPortion = genomeSeq[-20000:]
 outfile = open("tempFasta.fasta","w")
-outfile.write(">lastPortion\n"+firstPortion+"\n")
+outfile.write(">lastPortion\n"+lastPortion+"\n")
 outfile.close()
 
 #Chop scaffolds:

@@ -9,3 +9,6 @@ README.fuller-draft.md
 # Python bytecode
 __pycache__/
 *.pyc
+
+# Generated launcher — install.sh builds it from src/.GRACy_main.py (issue #9)
+GRACy.py

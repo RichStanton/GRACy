@@ -21,6 +21,8 @@ Issues: <https://github.com/RichStanton/GRACy/issues>
 | # | Title | Blocked by |
 |---|---|---|
 | [#23](https://github.com/RichStanton/GRACy/issues/23) | BUG-6: `QMessageBox` never imported in assembly/annotation/snpCalling — input guards raise NameError to terminal (latent bug unmasked by #2) | — |
+| [#30](https://github.com/RichStanton/GRACy/issues/30) | BUG-7: SPAdes 3.12 segfaults on WSL2 (spades-core/-hammer) — assembly can't run; **blocks #11 golden** (`ready-for-human`) | — |
+| [#33](https://github.com/RichStanton/GRACy/issues/33) | BUG-8: `varscan` silently no-ops without system `java` on PATH — SNP calling/consensus (`ready-for-human`) | — |
 
 ## Improvement plan — mechanical (`ready-for-agent`)
 
@@ -96,3 +98,18 @@ Issues: <https://github.com/RichStanton/GRACy/issues>
     held pending a maintainer-blessed golden dataset.
   - **Deferred:** a central testing-home layout (`tests/harness/`, `tests/expected/`, gitignored
     `tests/_results/`) — proposed, awaiting maintainer sign-off.
+
+- **2026-07-23 (session 3)** — **#11 smoke harness built; it proved the toolchain doesn't run
+  end-to-end on WSL2.** Three PRs opened from `master`, all **open for review** (no self-merge):
+  - **#11** — end-to-end assembly smoke harness (`tests/harness/smoke_assembly.{py,sh}`, drives the
+    real pipeline offscreen) + fast unit guard (16→26 tests). [PR #32](https://github.com/RichStanton/GRACy/pull/32).
+    **Golden deferred** — can't complete an assembly here (see #30).
+  - **libgomp fix** — khmer couldn't import (`libgomp.so.1` missing) → de novo silently emptied.
+    Install libgomp before khmer. [PR #31](https://github.com/RichStanton/GRACy/pull/31). Sibling to #29.
+  - **toolchain runnability sweep** — `tests/harness/verify_toolchain.sh` (companion to
+    `verify_install.sh`): 33 tools load ok + the two walls. [PR #34](https://github.com/RichStanton/GRACy/pull/34).
+  - **New bugs filed** (both `ready-for-human`): **#30** SPAdes 3.12 segfaults on WSL2 (blocks the #11
+    golden); **#33** varscan silently no-ops without system java on PATH (SNP calling).
+  - **CI** workflow written but unpushable (PAT lacks `workflow` scope) — YAML in PR #32's body.
+  - **#11 golden** needs a working Linux/HPC env (or a SPAdes upgrade) — end-to-end verification of the
+    structural phase (#12–#17) is gated on that. Detail in the [journal](../journal/2026-07-23.md).

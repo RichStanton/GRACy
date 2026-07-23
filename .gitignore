@@ -20,3 +20,6 @@ __pycache__/
 # Miniconda installers — install.sh downloads these on demand (issue #8)
 src/Miniconda3-latest-Linux-x86_64.sh
 src/Miniconda2-latest-Linux-x86_64.sh
+
+# Generated launcher — install.sh builds it from src/.GRACy_main.py (issue #9)
+GRACy.py

@@ -39,8 +39,8 @@ def fuseSequences2(s1,s2):
 	toFuse = open("s2.fasta","w")
 	toFuse.write(">s2\n"+s2+"\n")
 	toFuse.close()
-	os.system(installationDirectory+"src/conda/bin/makeblastdb -dbtype nucl -in s1.fasta >null 2>&1")
-	os.system(installationDirectory+"src/conda/bin/blastn -query s2.fasta -db s1.fasta -outfmt 6 -dust no -soft_masking false -task blastn -out outputBlast.txt >null 2>&1")
+	os.system(installationDirectory+"src/conda/bin/makeblastdb -dbtype nucl -in s1.fasta >/dev/null 2>&1")
+	os.system(installationDirectory+"src/conda/bin/blastn -query s2.fasta -db s1.fasta -outfmt 6 -dust no -soft_masking false -task blastn -out outputBlast.txt >/dev/null 2>&1")
 	blastFile = open("outputBlast.txt")
 
 	downstreamAlignment = []
@@ -77,8 +77,8 @@ def greedyElongation(seq):
 		#print "Perform the blast of the unmapped sequences...."
 		toAssemble = open("toAssemble.fasta","w")
 		toAssemble.write(">toElong\n"+reference[-200:]+"\n")
-		os.system(installationDirectory+"src/conda/bin/makeblastdb -in toElong.fasta -dbtype nucl >null 2>&1")
-		os.system(installationDirectory+"src/conda/bin/blastn -query unmapped.fasta -db toElong.fasta -outfmt 6 -num_threads 8 -dust no -soft_masking false -out outputBlast.txt  >null 2>&1")
+		os.system(installationDirectory+"src/conda/bin/makeblastdb -in toElong.fasta -dbtype nucl >/dev/null 2>&1")
+		os.system(installationDirectory+"src/conda/bin/blastn -query unmapped.fasta -db toElong.fasta -outfmt 6 -num_threads 8 -dust no -soft_masking false -out outputBlast.txt  >/dev/null 2>&1")
 		#print "Done"
 
 		#print "Fill the toAssemble file"
@@ -99,7 +99,7 @@ def greedyElongation(seq):
 
 		print("Perform second phrap assembly step.......")
 
-		os.system(installationDirectory+"src/conda/bin/cap3 toAssemble.fasta > cap3Assembly 2>null")
+		os.system(installationDirectory+"src/conda/bin/cap3 toAssemble.fasta > cap3Assembly 2>/dev/null")
 
 		numElong += 1
 
@@ -116,8 +116,8 @@ def greedyElongation(seq):
 		tempScaffold.write(">reference\n"+reference[-100:]+"\n")
 		tempScaffold.close()
 
-		os.system(installationDirectory+"src/conda/bin/makeblastdb -in tempScaffold.fasta -dbtype nucl >null 2>&1")
-		os.system(installationDirectory+"src/conda/bin/blastn -query tempScaffold_query.fasta -db tempScaffold.fasta -outfmt 6 -num_threads 10 -dust no -soft_masking false -out tempScaffold_outputBlast.txt >null 2>&1")
+		os.system(installationDirectory+"src/conda/bin/makeblastdb -in tempScaffold.fasta -dbtype nucl >/dev/null 2>&1")
+		os.system(installationDirectory+"src/conda/bin/blastn -query tempScaffold_query.fasta -db tempScaffold.fasta -outfmt 6 -num_threads 10 -dust no -soft_masking false -out tempScaffold_outputBlast.txt >/dev/null 2>&1")
 		tempScaffold = open("tempScaffold_outputBlast.txt")
 		line = tempScaffold.readline().rstrip()
 		fieldBlast = line.split("\t")
@@ -179,16 +179,16 @@ while True:
 		reference = str(seq_record.seq)
 
 	print("Indexing.....")
-	os.system(installationDirectory+"src/conda/bin/python "+installationDirectory+"src/conda/bin/bowtie2-build  toElong.fasta toElong >null 2>&1")
+	os.system(installationDirectory+"src/conda/bin/python "+installationDirectory+"src/conda/bin/bowtie2-build  toElong.fasta toElong >/dev/null 2>&1")
 	print("Aligning.....")
-	os.system(installationDirectory+"src/conda/bin/bowtie2 --local --very-fast-local -k 3 -p "+numThreads+"  -x toElong -1 "+ read1 + " -2 " + read2 + " -S "+ projectName+".sam >null 2>&1" )
+	os.system(installationDirectory+"src/conda/bin/bowtie2 --local --very-fast-local -k 3 -p "+numThreads+"  -x toElong -1 "+ read1 + " -2 " + read2 + " -S "+ projectName+".sam >/dev/null 2>&1" )
 
-	os.system(installationDirectory+"src/conda/bin/samtools view -bS -F 8 -f 4 "+ projectName+".sam > unmapped.bam 2>null")
-	os.system(installationDirectory+"src/conda/bin/bedtools bamtofastq -i unmapped.bam -fq unmapped.fastq >null 2>&1")
-	os.system(installationDirectory+"src/conda/bin/fastq_to_fasta -i unmapped.fastq -o unmapped.fasta -Q33 >null 2>&1")
+	os.system(installationDirectory+"src/conda/bin/samtools view -bS -F 8 -f 4 "+ projectName+".sam > unmapped.bam 2>/dev/null")
+	os.system(installationDirectory+"src/conda/bin/bedtools bamtofastq -i unmapped.bam -fq unmapped.fastq >/dev/null 2>&1")
+	os.system(installationDirectory+"src/conda/bin/fastq_to_fasta -i unmapped.fastq -o unmapped.fasta -Q33 >/dev/null 2>&1")
 
 	print("Clustering unmapped reads.....")
-	os.system(installationDirectory+"src/conda/bin/cd-hit-est  -d 0  -i unmapped.fasta -o unmapped_cdhit.fasta >null 2>&1")
+	os.system(installationDirectory+"src/conda/bin/cd-hit-est  -d 0  -i unmapped.fasta -o unmapped_cdhit.fasta >/dev/null 2>&1")
 
 	cdhitfile = open("unmapped_cdhit.fasta.clstr")
 	#Select only high representated unmapped reads
@@ -243,7 +243,7 @@ while True:
 	print("Assembling unmapped reads......")
 
 
-	os.system(installationDirectory+"src/conda/bin/cap3 unmapped.fasta > cap3Assembly 2>null")
+	os.system(installationDirectory+"src/conda/bin/cap3 unmapped.fasta > cap3Assembly 2>/dev/null")
 	unmappedContigsFile = open("unmapped.fasta.contigs2","w")
 
 	unmappedContigs = 0
@@ -252,8 +252,8 @@ while True:
 		tempScaffold = open("tempScaffold.fasta","w")
 		tempScaffold.write(">tempScaffold\n"+str(seq_record.seq)+"\n")
 		tempScaffold.close()
-		os.system(installationDirectory+"src/conda/bin/makeblastdb -in tempScaffold.fasta -dbtype nucl >null 2>&1")
-		os.system(installationDirectory+"src/conda/bin/blastn -query toElong.fasta -db tempScaffold.fasta -dust no -soft_masking false -outfmt 6 -out tempScaffold_outputBlast.txt >null 2>&1")
+		os.system(installationDirectory+"src/conda/bin/makeblastdb -in tempScaffold.fasta -dbtype nucl >/dev/null 2>&1")
+		os.system(installationDirectory+"src/conda/bin/blastn -query toElong.fasta -db tempScaffold.fasta -dust no -soft_masking false -outfmt 6 -out tempScaffold_outputBlast.txt >/dev/null 2>&1")
 		tempScaffold = open("tempScaffold_outputBlast.txt")
 
 		line = tempScaffold.readline().rstrip()
@@ -322,8 +322,8 @@ while True:
 	tempScaffold = open("tempScaffold.fasta","w")
 	tempScaffold.write(">tempScaffold\n"+longestScaffold+"\n")
 	tempScaffold.close()
-	os.system(installationDirectory+"src/conda/bin/makeblastdb -in tempScaffold.fasta -dbtype nucl >null 2>&1")
-	os.system(installationDirectory+"src/conda/bin/blastn -query toElong.fasta -db tempScaffold.fasta -dust no -soft_masking false -outfmt 6 -out tempScaffold_outputBlast.txt >null 2>&1")
+	os.system(installationDirectory+"src/conda/bin/makeblastdb -in tempScaffold.fasta -dbtype nucl >/dev/null 2>&1")
+	os.system(installationDirectory+"src/conda/bin/blastn -query toElong.fasta -db tempScaffold.fasta -dust no -soft_masking false -outfmt 6 -out tempScaffold_outputBlast.txt >/dev/null 2>&1")
 	tempScaffold = open("tempScaffold_outputBlast.txt")
 	line = tempScaffold.readline().rstrip()
 	fieldBlast = line.split("\t")

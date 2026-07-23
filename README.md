@@ -2,7 +2,7 @@
 
 GRACy is a desktop GUI pipeline for end-to-end HCMV (Human Cytomegalovirus) genome assembly and analysis. It provides a point-and-click interface wrapping ~25 bioinformatics command-line tools, targeting wet-lab scientists who are not command-line proficient.
 
-This is a fork of [Salvo La Rosa's original GRACy](https://github.com/salvocos/GRACy) with bugfixes and updates.
+This is a fork of the [original GRACy by salvocamiolo](https://github.com/salvocamiolo/GRACy) with bugfixes and updates.
 
 ---
 

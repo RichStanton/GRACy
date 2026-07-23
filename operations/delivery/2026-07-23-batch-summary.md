@@ -54,14 +54,3 @@ with a test that fails if the bug is reintroduced. Run them anytime with:
 ```
 src/conda/bin/python -m unittest discover -s tests
 ```
-
-## Decisions still needing you
-1. **Community PR #22** (`nightcityblade`) also fixed #10, but independently — your PR #28 landed first,
-   so #22 is now a redundant, conflicting duplicate. Nothing from it is in `master`. Recommend closing it.
-2. **Issue #11 (end-to-end smoke test)** is intentionally on hold: it needs a maintainer-blessed
-   "known-good" output dataset before it can serve as a real regression check. Everything after it
-   (#12–#17) is design work flagged for a human.
-
-## Security note (carried over)
-The `developer-keystrand` access token was exposed in an earlier session and **should be rotated**
-(and `~/.git-credentials` updated).

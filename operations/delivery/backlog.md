@@ -83,3 +83,16 @@ Issues: <https://github.com/RichStanton/GRACy/issues>
     golden output). Everything after is `ready-for-human` (#12–#17).
   - ⚠️ **Community PR #22** (`nightcityblade`, also closed #10) is now redundant/conflicting since #28
     landed — maintainer should close it.
+
+- **2026-07-23 (later)** — **fresh-clone install regression fixed** (not a pre-filed issue; caught by
+  user testing feedback). #7/#8's switch to `Miniconda3-latest` broke a clean install two ways:
+  conda's Terms-of-Service gate on the default channels, and a Python-3.14 base that made the
+  version-pinned bio tools unsolvable. Fixed by pinning the download to `Miniconda3-py37_23.1.0`
+  (conda 23.1.0 / Py3.7) — no tool-version changes. Verified by a full 25-tool sequential reinstall
+  (30/30, 0 failures, 0 ToS gates). **Merged** ([PR #29](https://github.com/RichStanton/GRACy/pull/29),
+  squash) by user request; recorded in [ADR-0001](../decisions/ADR-0001-pin-miniconda3-py37.md) and
+  [delivery summary](2026-07-23-install-toolchain-fix.md). Also added the project `tester` subagent.
+  - This **unblocks the fresh-clone toolchain install** that **#11** (smoke test) depends on; #11 still
+    held pending a maintainer-blessed golden dataset.
+  - **Deferred:** a central testing-home layout (`tests/harness/`, `tests/expected/`, gitignored
+    `tests/_results/`) — proposed, awaiting maintainer sign-off.

@@ -10,5 +10,16 @@ README.fuller-draft.md
 __pycache__/
 *.pyc
 
+# macOS junk (issue #8)
+.DS_Store
+._*
+
+# Editor/backup files (issue #7)
+*.bak
+
+# Miniconda installers — install.sh downloads these on demand (issue #8)
+src/Miniconda3-latest-Linux-x86_64.sh
+src/Miniconda2-latest-Linux-x86_64.sh
+
 # Generated launcher — install.sh builds it from src/.GRACy_main.py (issue #9)
 GRACy.py

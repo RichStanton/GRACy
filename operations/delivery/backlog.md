@@ -73,3 +73,13 @@ Issues: <https://github.com/RichStanton/GRACy/issues>
     [PR #22](https://github.com/RichStanton/GRACy/pull/22) (`nightcityblade`) which also closes #10 and
     conflicts with #27 — maintainer to pick one.
   - **Ordering note:** #27 deletes files that #22 edits; #28 was scoped to live files to compose with #27.
+
+- **2026-07-23** — AFK batch **merged** (squash) by user request: PRs #24, #25, #26, #27, #28 all landed;
+  issues #23, #3, #9, #8, #7, #10 auto-closed. `master` @ `7bd5e80`; **14 tests green**. #27 needed a
+  one-line `.gitignore` conflict resolved (kept both the #7/#8 junk patterns and the #9 `GRACy.py`
+  entry). Housekeeping: gitignored + removed stale install byproducts (`installation.log`, `condaList`,
+  `src/installation.log`).
+  - **`ready-for-agent` now clear except #11** (smoke test — still held; needs a maintainer-blessed
+    golden output). Everything after is `ready-for-human` (#12–#17).
+  - ⚠️ **Community PR #22** (`nightcityblade`, also closed #10) is now redundant/conflicting since #28
+    landed — maintainer should close it.

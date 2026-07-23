@@ -1,0 +1,2 @@
+# Golden / known-good outputs for regression diffing live here (committed).
+# The end-to-end smoke-test baseline (issue #11) lands here once a maintainer blesses it.

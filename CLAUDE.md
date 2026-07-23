@@ -27,7 +27,8 @@ Linux HPC environments and wet-lab scientists. This clone is a fork of
 | `operations/decisions/` | ADRs, append-only. |
 | `operations/archive/` | Historical notes, not maintained (original code review). |
 | `src/` | Application code — Tkinter launcher, PyQt5 module GUIs, per-stage scripts. |
-| `tests/` | Regression tests (stdlib `unittest`). Run: `src/conda/bin/python -m unittest discover -s tests`. |
+| `tests/` | Regression tests (stdlib `unittest`) + `harness/` scripts, `expected/` golden outputs. Run: `src/conda/bin/python -m unittest discover -s tests`. Layout + conventions: [`tests/README.md`](tests/README.md). |
+| `.claude/agents/` | Project subagents. `tester` — verification specialist (reproduce real failures, red→green, writes only under `tests/`). |
 | `data/` | Reference genome, example configs. |
 | `docs/agents/` | Agent-skill docs managed by `setup-matt-pocock-skills` — leave in place. |
 

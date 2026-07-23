@@ -65,6 +65,7 @@ check biopython   -c bioconda -y biopython=1.76
 check jellyfish   -c bioconda -y jellyfish=2.2.10
 check bwa         -c bioconda -y bwa=0.7.17
 check prinseq     -c bioconda -y prinseq=0.20.4
+check libgomp     -c conda-forge -y libgomp
 check khmer       -c bioconda -y khmer=3.0.0
 check seqtk       -c bioconda -y seqtk=1.3
 check spades      -c bioconda -y spades=3.12

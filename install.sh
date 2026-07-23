@@ -15,11 +15,19 @@ else
 	rm installation.log
 	fi
 	touch installation.log
-	if ! test -f "Miniconda3-latest-Linux-x86_64.sh"; then
+	# Pinned to a Python-3.7 Miniconda build on purpose. Do NOT switch to
+	# "-latest": current Miniconda ships Python 3.14 (which conda pins into the
+	# base env, so the old pinned bio tools below — bowtie2=2.3.5.1, cutadapt=2.6,
+	# bwa, blast, biopython, pyqt … — can't be solved) AND a conda new enough to
+	# gate the defaults channels behind an interactive Terms-of-Service prompt
+	# that aborts every non-interactive install. conda 23.1.0 / py37 predates the
+	# ToS gate and gives the 3.7 base these tools were pinned against.
+	MINICONDA3_INSTALLER="Miniconda3-py37_23.1.0-1-Linux-x86_64.sh"
+	if ! test -f "$MINICONDA3_INSTALLER"; then
 		echo "Downloading Miniconda3 installer...."
-		wget -q https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+		wget -q "https://repo.anaconda.com/miniconda/$MINICONDA3_INSTALLER"
 	fi
-	bash Miniconda3-latest-Linux-x86_64.sh -b -p ./conda >> installation.log
+	bash "$MINICONDA3_INSTALLER" -b -p ./conda >> installation.log
 	cd ../
 	if  test -f "./src/conda/bin/conda"; then
 	echo "Miniconda3 successfully installed"

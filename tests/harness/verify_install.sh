@@ -67,7 +67,14 @@ check bwa         -c bioconda -y bwa=0.7.17
 check prinseq     -c bioconda -y prinseq=0.20.4
 check khmer       -c bioconda -y khmer=3.0.0
 check seqtk       -c bioconda -y seqtk=1.3
-check spades      -c bioconda -y spades=3.12
+# spades is NOT installed into the base env any more — it lives in its own env
+# (src/condaSpades, SPAdes 4.x; ADR-0002). Reproduce that separately:
+$CONDA create -p "$WORKDIR/condaSpades" -c conda-forge -c bioconda -y spades=4.2.0 >> "$LOG" 2>&1
+if [ -x "$WORKDIR/condaSpades/bin/spades.py" ]; then
+  printf "  %-7s %-22s (dedicated env)\n" "PASS" "spades"; pass=$((pass+1))
+else
+  printf "  %-7s %-22s (dedicated env)\n" "FAIL" "spades"; fail=$((fail+1))
+fi
 check picard      -c bioconda -y picard=2.21
 check lastz       -c bioconda -y lastz=1.0.4
 check perl-perl4-corelibs -c bioconda -y perl-perl4-corelibs

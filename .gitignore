@@ -1,5 +1,6 @@
 src/conda/
 src/conda2/
+src/condaSpades/
 .claude/settings.local.json
 
 # Local backups from the Windows->WSL consolidation (kept on disk, not tracked)

@@ -21,7 +21,8 @@ os.system(installationDirectory+"src/conda/bin/samtools view -f 4 -F 8 -b alignm
 os.system(installationDirectory+"src/conda/bin/samtools view -f 8 -F 4 -b alignment.bam >twoMapped.bam")
 os.system(installationDirectory+"src/conda/bin/samtools merge all.bam botMapped.bam oneMapped.bam twoMapped.bam")
 os.system(installationDirectory+"src/conda/bin/bam2fastq -o reads#.fastq all.bam")
-os.system(installationDirectory+"src/conda/bin/python "+installationDirectory+"src/conda/bin/spades.py -1 reads_1.fastq -2 reads_2.fastq  --cov-cutoff auto --careful -k 51,61,71 -o centerScaffold")
+# SPAdes runs from its own env (src/condaSpades, SPAdes 4.x); see ADR-0002.
+os.system(installationDirectory+"src/condaSpades/bin/python "+installationDirectory+"src/condaSpades/bin/spades.py -1 reads_1.fastq -2 reads_2.fastq  --cov-cutoff auto --careful -k 51,61,71 -o centerScaffold")
 #Following command replaced by the following
 os.system(installationDirectory+"src/conda2/bin/python "+installationDirectory+"src/scripts/assembly/utils/scaffold_builder.py "+installationDirectory+" -q ./centerScaffold/scaffolds.fasta -r merlinGenome_190000_200000_f.txt -p sb2 ")
 #os.system(installationDirectory+"resources/Ragout/bin/ragout --overwrite center_recepie.rcp")

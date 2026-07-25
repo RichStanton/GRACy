@@ -32,7 +32,9 @@ for b in range(2):
         os.system(installationDirectory+"src/conda/bin/seqtk sample -s"+str(a*b)+" "+read1+" "+str(a)+" >subsample_1.fq")
         os.system(installationDirectory+"src/conda/bin/seqtk sample -s"+str(a*b)+" "+read2+" "+str(a)+" >subsample_2.fq")
         print("Performing de novo assembly....")
-        os.system(installationDirectory+"src/conda/bin/python "+installationDirectory+"src/conda/bin/spades.py -1 subsample_1.fq -2 subsample_2.fq --cov-cutoff auto --careful -k 53,63,73,83 -o outputSpades_"+str(a)+"_"+str(b) + " >/dev/null 2>&1")
+        # SPAdes runs from its own env (src/condaSpades, SPAdes 4.x) — the pinned 3.12 build
+        # segfaults on modern glibc, and 4.x needs a newer Python than the py37 base. See ADR-0002.
+        os.system(installationDirectory+"src/condaSpades/bin/python "+installationDirectory+"src/condaSpades/bin/spades.py -1 subsample_1.fq -2 subsample_2.fq --cov-cutoff auto --careful -k 53,63,73,83 -o outputSpades_"+str(a)+"_"+str(b) + " >/dev/null 2>&1")
         longestScaffold = 0
         if os.path.isfile("./outputSpades_"+str(a)+"_"+str(b)+"/scaffolds.fasta") == True:
             scaffoldsFile = open("./outputSpades_"+str(a)+"_"+str(b)+"/scaffolds.fasta")

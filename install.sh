@@ -207,11 +207,15 @@ else
 		echo "seqtk was not installed. Please check file installation.log for details"
 	fi
 
-	echo "Installing spades. Please wait...."
-	./src/conda/bin/conda install -c bioconda -y  spades=3.12 >> installation.log
+	# SPAdes lives in its OWN env (src/condaSpades), not the py37 base. Two reasons (ADR-0002):
+	# the pinned spades=3.12 is a 2018 build that segfaults on modern glibc (>=~2.34, e.g. Ubuntu
+	# 22.04+), and current SPAdes (4.x) needs Python >=3.8 — which would drag the base off 3.7 and
+	# break the pinned py37 tools (pyqt=5.9.2, biopython=1.76, ...). The two call sites
+	# (getBestAssembly.py, createCenterScaffold.py) invoke src/condaSpades/bin/spades.py directly.
+	echo "Installing spades (dedicated env). Please wait...."
+	./src/conda/bin/conda create -p ./src/condaSpades -c conda-forge -c bioconda -y spades=4.2.0 >> installation.log
 	echo "Checking spades installation...."
-	./src/conda/bin/conda list > condaList
-	if grep -Fq spades condaList; then
+	if test -x "./src/condaSpades/bin/spades.py"; then
 		echo "spades was successfully installed"
 	else
 		echo "spades was not installed. Please check file installation.log for details"

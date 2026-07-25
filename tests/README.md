@@ -19,8 +19,8 @@ be skipped unless PyQt5 is importable.
 | Location | Holds | Tracked? |
 |---|---|---|
 | `tests/` | unittest regression tests, one per fix, each naming its issue in the docstring | yes |
-| `tests/harness/` | reusable **verification scripts** too heavy for unittest (e.g. `verify_install.sh`, the full toolchain-install reproducer) | yes |
-| `tests/fixtures/` | small committed **inputs** a test needs | yes |
+| `tests/harness/` | reusable **verification scripts** too heavy for unittest (e.g. `verify_install.sh`, the full toolchain-install reproducer; `smoke_assembly.{sh,py}`, the #11 end-to-end pipeline run) | yes |
+| `tests/fixtures/` | small committed **inputs** a test needs (e.g. `smoke_assembly.conf.template`) | yes |
 | `tests/expected/` | **golden / known-good outputs** to diff against (home for the issue-#11 e2e baseline once blessed) | yes |
 | `testDataset/` | pipeline sample reads for smoke runs — lives at the repo root, referenced by path in the app | yes |
 | `tests/_results/` | **live run outcomes / artifacts** — throwaway | no (gitignored) |
@@ -42,6 +42,10 @@ Two kinds of check live here:
   [ADR-0001](../operations/decisions/ADR-0001-pin-miniconda3-py37.md); pairs with the
   `test_install_miniconda_pin.py` unit guard).
 
-A full end-to-end smoke test on `testDataset/` with a golden output is tracked separately
-in issue #11 — that is the pipeline-level safety net; its baseline belongs in
-`tests/expected/`.
+A full end-to-end smoke test on `testDataset/` lives in `tests/harness/smoke_assembly.sh`
+(issue #11) — the pipeline-level safety net. It runs the real assembly pipeline (driving the
+Qt widget offscreen, since there is no headless entry until #14) and checks the genome is
+non-empty and plausible. Its pure checks are unit-guarded fast by `test_smoke_assembly_harness.py`.
+The exact-match **golden baseline is not yet blessed** — a maintainer runs the harness once,
+confirms the genome, and writes the printed fingerprint to `tests/expected/smoke_assembly.fingerprint`;
+re-running with `--golden tests/expected/smoke_assembly.fingerprint` then gives full regression power.

@@ -26,8 +26,16 @@ import matplotlib.pyplot as plt
 HCMV_GENOME_SIZE = 235646.0
 
 
+# GRACy's bundled conda bins must be on PATH before any tool runs (issue #33):
+# tools are invoked by absolute path, but wrappers such as varscan shell out to a
+# bare `java` internally. See src/scripts/utils/toolpath.py.
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "utils"))
+from toolpath import ensure_tool_path
+
+
 class Ui_Form(object):
 	def setupUi(self, Form,installationDirectory):
+		ensure_tool_path(installationDirectory)
 		Form.setObjectName("Reads filtering tool")
 		Form.resize(1160, 718)
 		self.label_2 = QtWidgets.QLabel(Form)

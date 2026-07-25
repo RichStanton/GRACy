@@ -178,6 +178,15 @@ else
 		echo "prinseq was not installed. Please check file installation.log for details"
 	fi
 
+	# khmer's C extension (_khmer) links against the OpenMP runtime libgomp.so.1, but the
+	# bioconda khmer=3.0.0 package does not pull it into this py37 env. Without it, every khmer
+	# tool (interleave-reads.py, normalize-by-median.py) dies at import with
+	# "ImportError: libgomp.so.1: cannot open shared object file", which silently empties the
+	# de novo read set and aborts assembly. Install the runtime explicitly so the toolchain
+	# stays self-contained (does not rely on a system gcc/libgomp being present). See #11.
+	echo "Installing libgomp (khmer OpenMP runtime). Please wait...."
+	./src/conda/bin/conda install -c conda-forge -y libgomp >> installation.log
+
 	echo "Installing khmer. Please wait...."
 	./src/conda/bin/conda install -c bioconda -y  khmer=3.0.0  >> installation.log
 	echo "Checking khmer installation...."

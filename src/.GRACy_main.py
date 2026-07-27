@@ -17,6 +17,14 @@ import sys
 from tkinter import font as tkFont
 import os
 
+# GRACy's bundled conda bins must be on PATH before any tool runs (issue #33): tools are
+# invoked by absolute path, but wrappers such as varscan shell out to a bare `java`
+# internally. Setting it here means every module launched below inherits it.
+# `installationDirectory` is defined by the header install.sh prepends to GRACy.py.
+sys.path.insert(0, os.path.join(installationDirectory, "src", "scripts", "utils"))
+from toolpath import ensure_tool_path
+
+ensure_tool_path(installationDirectory)
 
 
 def vp_start_gui():

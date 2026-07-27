@@ -37,8 +37,16 @@ def collectKmers(sequence, kmerLength):
 	return [sequence[a:a + kmerLength] for a in range(0, len(sequence) - kmerLength + 1)]
 
 
+# GRACy's bundled conda bins must be on PATH before any tool runs (issue #33):
+# tools are invoked by absolute path, but wrappers such as varscan shell out to a
+# bare `java` internally. See src/scripts/utils/toolpath.py.
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "utils"))
+from toolpath import ensure_tool_path
+
+
 class Ui_Form(object):
 	def setupUi(self, Form,installationDirectory):
+		ensure_tool_path(installationDirectory)
 		Form.setObjectName("Form")
 		Form.resize(1072, 668)
 		self.label = QtWidgets.QLabel(Form)

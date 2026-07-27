@@ -100,9 +100,9 @@ if you're mid-study and comparing against earlier results, it's worth knowing.
 
 ---
 
-## The two messages you saw during installation
+## The two messages seen during installation
 
-You reported two sets of errors and asked whether they mattered. **Neither is a problem, and neither
+Two sets of errors were reported during the installation. **Neither is a problem, and neither
 is new.** Here's what each one is.
 
 ### "The environment is inconsistent" — the long list of packages

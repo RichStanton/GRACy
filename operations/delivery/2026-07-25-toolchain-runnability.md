@@ -2,7 +2,7 @@
 
 **For:** the people who use GRACy to analyse genomes.
 **Status:** delivered and merged. Automated test suite **41 tests, all passing**.
-**Covers:** everything delivered since the last update you were sent
+**Covers:** everything delivered since the previous update
 (`2026-07-23-install-toolchain-fix.md`, the fresh-clone install fix) — five pull requests plus the
 testing groundwork that update left open.
 
@@ -30,7 +30,7 @@ its own isolated environment so the rest of the toolchain stays exactly as it wa
 ### Two silent failures fixed — the important ones
 
 Silent failures are the dangerous kind: the software says it worked, and the output looks plausible,
-but it's wrong. There's no way for you to tell.
+but it's wrong, and there's no way to tell from the output alone.
 
 - **Read normalisation was producing nothing.** A missing system library meant one tool couldn't
   start, so it quietly emitted zero reads and the assembly collapsed further down the line with an
@@ -54,7 +54,7 @@ possible.
   does. It reads its settings directly from `install.sh`, so it can't silently drift out of step with
   the real installer. This was the outstanding follow-up from the last update, and it's now the
   standing check for install problems. *(`tests/harness/verify_install.sh`.)*
-- A **toolchain check** that verifies every tool GRACy relies on genuinely loads and runs on your
+- A **toolchain check** that verifies every tool GRACy relies on genuinely loads and runs on a given
   machine, in seconds, without needing any data. This is what found the three failures above.
   *(PR #34 — run it with `bash tests/harness/verify_toolchain.sh`.)*
 - An **end-to-end test** that drives the real pipeline on the bundled sample data and checks the
@@ -83,20 +83,20 @@ We deliberately avoided the easy checks that would have looked green and told us
 
 ---
 
-## What this means for you
+## What this means in practice
 
 - **Assembly works.** It previously could not complete at all on a current system.
-- **Results you were getting may have been incomplete.** If you ran assembly or SNP calling on a
-  machine without Java installed system-wide, the consensus-polishing and variant-calling steps were
-  silently skipped. Those steps now run. This is the main reason to move to this version.
+- **Earlier results may have been incomplete.** On any machine without Java installed system-wide,
+  the consensus-polishing and variant-calling steps were silently skipped during assembly and SNP
+  calling. Those steps now run. This is the main reason to move to this version.
 - **Problems will now be visible.** The failures fixed here were invisible; the checks added here are
   designed to make that class of problem announce itself instead.
 
-**One thing to be aware of — this is a change from the last update.** That update could tell you "no
-tool versions changed, so your results are unaffected." **This one can't.** The assembler upgrade
-means assemblies produced now come from a modern version of SPAdes, and results may differ from
-historical GRACy runs. It was unavoidable — the old version simply cannot run on current systems — but
-if you're mid-study and comparing against earlier results, it's worth knowing.
+**One thing to be aware of — this is a change from the previous update.** That update could state that
+no tool versions had changed, so analysis results were unaffected. **This one cannot.** The assembler
+upgrade means assemblies produced now come from a modern version of SPAdes, and results may differ
+from historical GRACy runs. It was unavoidable — the old version simply cannot run on current
+systems — but anyone mid-study, comparing against earlier results, needs to know.
 
 ---
 
@@ -110,8 +110,9 @@ is new.** Here's what each one is.
 **Short answer: pre-existing, harmless, and already there in the previous release.**
 
 We checked the logs from the *previous* release and found the identical warning appearing five times,
-at the same two points in the install. So the theory you saw online — that it's a newer, chattier
-message about something that was always there — is the correct one here. Nothing changed to cause it.
+at the same two points in the install. Of the explanations circulating online, the one that applies
+here is that this is a newer, chattier message about something that was always present. Nothing
+changed to cause it.
 
 What's actually happening: GRACy keeps a small, separate **legacy Python 2 environment** purely for
 four older tools (Ragout, mummer, bcftools, LoFreq). That environment is built from an installer
@@ -121,7 +122,7 @@ packages therefore end up alongside 2020-era ones, and the package manager notic
 Two things make it look far worse than it is:
 
 1. When the package manager reports this, it lists the **entire environment** rather than just the few
-   packages actually in conflict. That's why you're looking at ~57 lines. It is not 57 broken packages.
+   packages actually in conflict. That's why the list runs to ~57 lines. It is not 57 broken packages.
 2. It's confined to that legacy environment. **The main GRACy environment is unaffected.**
 
 We didn't just reason about it — we tested all five tools in that environment on a machine showing the
@@ -149,7 +150,7 @@ isn't causing failures, but it undermines reproducibility. It's logged and will 
 
 - The **assembly** module has been exercised end to end. The other five modules (annotation,
   genotyping, read filtering, SNP calling, database submission) have not yet been run end to end —
-  your testing will be the first real exercise of those.
+  user testing will be the first real exercise of those.
 - On a memory-constrained machine, one k-mer counting step can exhaust available RAM near the end of
   an assembly. We know the specific cause and the fix; it isn't yet part of the release. A normal HPC
   node has ample headroom.

@@ -2,6 +2,9 @@
 
 **For:** the people who use GRACy to analyse genomes.
 **Status:** delivered and merged. Automated test suite **41 tests, all passing**.
+**Covers:** everything delivered since the last update you were sent
+(`2026-07-23-install-toolchain-fix.md`, the fresh-clone install fix) — five pull requests plus the
+testing groundwork that update left open.
 
 ---
 
@@ -40,11 +43,25 @@ but it's wrong. There's no way for you to tell.
 
 ### A safety net so this class of problem is caught in future
 
-- An **end-to-end test** that drives the real pipeline on the bundled sample data and checks the
-  output is a plausible genome. *(PR #32)*
+The previous update ended with an open question: where should verification scripts, sample sets and
+run outputs actually live? That's now settled and built, and it's what made the rest of this release
+possible.
+
+- A **permanent home for verification work** — reusable check scripts, known-good reference outputs,
+  and throwaway run results kept separate from each other. *(commit `c9a8537`; layout documented in
+  `tests/README.md`.)*
+- A **reinstall reproducer** that rebuilds the entire toolchain from scratch, the way a clean install
+  does. It reads its settings directly from `install.sh`, so it can't silently drift out of step with
+  the real installer. This was the outstanding follow-up from the last update, and it's now the
+  standing check for install problems. *(`tests/harness/verify_install.sh`.)*
 - A **toolchain check** that verifies every tool GRACy relies on genuinely loads and runs on your
   machine, in seconds, without needing any data. This is what found the three failures above.
   *(PR #34 — run it with `bash tests/harness/verify_toolchain.sh`.)*
+- An **end-to-end test** that drives the real pipeline on the bundled sample data and checks the
+  output is a plausible genome. *(PR #32)*
+
+Together these cover the three questions that matter: *does it install?*, *do the tools run?*, and
+*does the pipeline produce a sensible genome?* Before this release only the first had an answer.
 
 ---
 
@@ -75,10 +92,11 @@ We deliberately avoided the easy checks that would have looked green and told us
 - **Problems will now be visible.** The failures fixed here were invisible; the checks added here are
   designed to make that class of problem announce itself instead.
 
-**One thing to be aware of:** the assembler upgrade means assemblies produced now come from a modern
-version of SPAdes. Results may differ from historical GRACy runs. This was unavoidable — the old
-version simply cannot run on current systems — but if you're mid-study and comparing against earlier
-results, it's worth knowing.
+**One thing to be aware of — this is a change from the last update.** That update could tell you "no
+tool versions changed, so your results are unaffected." **This one can't.** The assembler upgrade
+means assemblies produced now come from a modern version of SPAdes, and results may differ from
+historical GRACy runs. It was unavoidable — the old version simply cannot run on current systems — but
+if you're mid-study and comparing against earlier results, it's worth knowing.
 
 ---
 
@@ -140,13 +158,17 @@ isn't causing failures, but it undermines reproducibility. It's logged and will 
 
 ## References
 
-| Change | PR | Closes |
+Everything below landed after the previous update (`2026-07-23-install-toolchain-fix.md`, PR #29).
+
+| Change | Reference | Closes |
 |---|---|---|
-| SPAdes upgraded to a version that runs on modern Linux | #35 | #30 |
-| Variant calling no longer silently skipped | #36 | #33 |
-| Read normalisation no longer silently produces nothing | #31 | — |
-| End-to-end pipeline test on sample data | #32 | — |
-| Per-tool runnability check | #34 | — |
+| SPAdes upgraded to a version that runs on modern Linux | PR #35 | #30 |
+| Variant calling no longer silently skipped | PR #36 | #33 |
+| Read normalisation no longer silently produces nothing | PR #31 | — |
+| End-to-end pipeline test on sample data | PR #32 | — |
+| Per-tool runnability check | PR #34 | — |
+| Testing home + reinstall reproducer *(the last update's open follow-up)* | commit `c9a8537` | — |
 
 Background: `operations/decisions/ADR-0002-spades-dedicated-env.md` (why SPAdes lives in its own
-environment), `operations/journal/2026-07-25.md` (session detail).
+environment), `tests/README.md` (how the verification scripts are organised),
+`operations/journal/2026-07-25.md` (session detail).

@@ -32,3 +32,8 @@ condaList
 
 # Ephemeral test run outcomes — only golden baselines (tests/expected/) are tracked
 tests/_results/
+
+# Raw logs users send us when reporting install/run problems. Kept locally as evidence,
+# never committed: they carry third-party HPC usernames and this repo is public. Findings
+# drawn from them belong in operations/, quoted rather than linked.
+feedback/
